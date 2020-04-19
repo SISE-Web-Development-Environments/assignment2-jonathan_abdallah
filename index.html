@@ -15,35 +15,68 @@
 
 		<nav>
 			<div id="nav_list">
-					<br><br><br>
-					<li>Welcome</li>
-					<br><br><br>
-					<li>Login</li>
-					<br><br><br>
-					<li>Register</li>
-					<br><br><br>
-					<li>About</li>
+				<br><br><br>
+				<button id="nav_welcome_button" type="button" >Welcome</button>
+				<br><br><br>
+				<button id="nav_login_button" type="button" >Login</button>
+				<br><br><br>
+				<button id="nav_register_button" type="button" >Register</button>
+				<br><br><br>
+				<button id="nav_settings_button" type="button" >Settings</button>
+				<br><br><br>
+				<button id="nav_about_button" type="button" >About</button>
 			</div>
 		</nav>
 
 
 		<section>
+
+			<!-- WELCOME PAGE -->
 			<div id="welcome_page">
-				TODO:
+				Welcome to Pacman!
+				<button id="login_button" type="button" >Login</button>
+				<button id="register_button" type="button" >Register</button>
 			</div>
 
+			<!-- REGISTER PAGE -->
 			<div id="register_page" style="display: none;">
 				TODO:
+				<form>
+					<label for="fname">Full Name:</label><br>
+					<input type="text" id="fname" name="fname"><br>
+					
+					<label for="username">User Name:</label><br>
+					<input type="text" id="username" name="uname"><br>
+
+					<label for="password">Password:</label><br>
+					<input type="text" id="password" name="pass"><br>
+
+					<label for="email">E-mail:</label><br>
+					<input type="text" id="email" name="mail"><br>
+
+					<label for="date of birth">Date of Birth:</label><br>
+					<label for="TODO">TODO</label><br>
+
+					<button id="register_submit" type="button" >Submit</button>
+				</form>
 			</div>
 
+			<!-- LOGIN PAGE -->
+			<div id="login_page" style="display: none;">
+				<button id="play_button" type="button" >Login & Play!</button>
+			</div>
+
+			<!-- ABOUT PAGE -->
 			<div id="about_page" style="display: none;">
 				TODO:
 			</div>
 
+			<!-- SETTINGS PAGE -->
 			<div id="settings_page" style="display: none;">
 				TODO:
 			</div>
 
+			<!-- GAME PAGE -->
 			<div id="game" style="display: none;">
 				<div id="score">
 					<label for="lblScore">SCORE:</label>
@@ -58,9 +91,61 @@
 		</section>
 
 		<footer>
-			<h1>Footer stuff</h1>
+			<h1>Footer TODO</h1>
 		</footer>
 
+
+		<!-- **************SCRIPTS ************ -->
+
+		<script type="text/javascript"> 
+			//globals
+			let pages = {}				//dictionary for all the pages		
+			let users = []				// { name: string, password: string }
+			
+			//init
+			$(document).ready(function(){
+				//init buttons
+				let login_button = $("#login_button")
+				login_button.click(function() {displayPage('login')})
+				let register_button = $("#register_button")
+				register_button.click(function() {displayPage('register')})
+				$("#nav_welcome_button").click(function() {displayPage('welcome')})
+				$("#nav_register_button").click(function() {displayPage('register')})
+				$("#nav_login_button").click(function() {displayPage('login')})
+				$("#nav_about_button").click(function() {displayPage('about')})
+				$("#nav_settings_button").click(function() {displayPage('settings')})
+				$("#play_button").click(function() {displayPage('game')})
+
+				//init pages
+				pages['welcome'] = $('#welcome_page')
+				pages['login'] = $('#login_page')
+				pages['register'] = $('#register_page')
+				pages['about'] = $('#about_page')
+				pages['settings'] = $('#settings_page')
+				pages['game'] = $('#game')
+
+				//init users
+				users.push({name: "p", password: "p"})
+			});
+
+			//hides all pages except the one that is named
+			function displayPage(name /*string*/) {
+				for (let key in pages) {
+					// check if the property/key is defined in the object itself, not in parent
+					if (pages.hasOwnProperty(key)) {           
+						pages[key].hide()
+					}
+				}	
+				let pageToShow = pages[name]
+				if(pageToShow)	{
+					pageToShow.show()
+				}				
+			}
+
+			
+
+
+		</script>
 
 	</body>
 </html>
