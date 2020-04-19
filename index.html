@@ -15,24 +15,30 @@
 
 		<nav>
 			<div id="nav_list">
-					<br><br><br>
-					<li>Welcome</li>
-					<br><br><br>
-					<li>Login</li>
-					<br><br><br>
-					<li>Register</li>
-					<br><br><br>
-					<li>About</li>
+				<br><br><br>
+				<li>Welcome</li>
+				<br><br><br>
+				<li>Login</li>
+				<br><br><br>
+				<li>Register</li>
+				<br><br><br>
+				<li>About</li>
 			</div>
 		</nav>
 
 
 		<section>
 			<div id="welcome_page">
-				TODO:
+				Welcome to Pacman!
+				<button id="login_button" type="button" >Login</button>
+				<button id="register_button" type="button" >Register</button>
 			</div>
 
 			<div id="register_page" style="display: none;">
+				TODO:
+			</div>
+
+			<div id="login_page" style="display: none;">
 				TODO:
 			</div>
 
@@ -61,6 +67,57 @@
 			<h1>Footer stuff</h1>
 		</footer>
 
+		<script type="text/javascript"> 
+			//window.alert("start")
+			//globals
+			let pages = {}				//dictionary for all the pages		
+			let users = []				// { name: string, password: string }
+			
+			//init
+			$(document).ready(function(){
+				//init buttons
+				let login_button = $("#login_button")
+				login_button.click(goToLoginPage)
+				let register_button = $("#register_button")
+				register_button.click(goToRegisterPage)
+
+				//init pages
+				pages['welcome'] = $('#welcome_page')
+				pages['login'] = $('#login_page')
+				pages['register'] = $('#register_page')
+				pages['about'] = $('#about_page')
+				pages['settings'] = $('#settings_page')
+				pages['game'] = $('#game')
+
+				//init users
+				users.push({name: "p", password: "p"})
+			});
+
+			//hides all pages except the one that is named
+			function displayPage(name /*string*/) {
+				for (let key in pages) {
+					// check if the property/key is defined in the object itself, not in parent
+					if (pages.hasOwnProperty(key)) {           
+						pages[key].hide()
+					}
+				}	
+				let pageToShow = pages[name]
+				if(pageToShow)	{
+					pageToShow.show()
+				}				
+			}
+
+			function goToLoginPage() {
+				displayPage('login')
+			}
+		
+			function goToRegisterPage() {
+				displayPage('register')
+			}
+
+
+
+		</script>
 
 	</body>
 </html>
