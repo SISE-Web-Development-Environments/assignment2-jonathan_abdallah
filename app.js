@@ -7,15 +7,24 @@ var start_time;
 var time_elapsed;
 var interval;
 
-$(document).ready(function() {
-	context = canvas.getContext("2d");
-	Start();
-});
+//default settings
+var up_key = 38;
+var down_key = 40;
+var left_key = 37;
+var right_key = 39;
+var pickup_5_color = '#000000'
+var pickup_15_color = '#000000'
+var pickup_25_color = '#000000'
+var max_time = '#ffffff'
+var num_of_pickups = 50
+var num_of_enemies = 1
+
 
 function Start() {
+
 	board = new Array();
 	score = 0;
-	pac_color = "yellow";
+	pac_color = "#ffff00";
 	var cnt = 100;
 	var food_remain = 50;
 	var pacman_remain = 1;
@@ -83,16 +92,16 @@ function findRandomEmptyCell(board) {
 }
 
 function GetKeyPressed() {
-	if (keysDown[38]) {
+	if (keysDown[up_key]) {
 		return 1;
 	}
-	if (keysDown[40]) {
+	if (keysDown[down_key]) {
 		return 2;
 	}
-	if (keysDown[37]) {
+	if (keysDown[left_key]) {
 		return 3;
 	}
-	if (keysDown[39]) {
+	if (keysDown[right_key]) {
 		return 4;
 	}
 }

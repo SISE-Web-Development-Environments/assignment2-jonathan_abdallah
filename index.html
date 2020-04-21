@@ -17,7 +17,6 @@
 
 
 		<!-- **************SCRIPTS ************ -->
-
 		<script type="text/javascript"> 
 			//globals
 			let pages = {}				//dictionary for all the pages		
@@ -25,28 +24,28 @@
 			
 			//init
 			$(document).ready(function(){
+
 				//init buttons
 				$("#login_button").click(function() {displayPage('login')})
 				$("#register_button").click(function() {displayPage('register')})
-
 				$("#nav_welcome_button").click(function() {displayPage('welcome')})
 				$("#nav_register_button").click(function() {displayPage('register')})
 				$("#nav_login_button").click(function() {displayPage('login')})
 				$("#nav_settings_button").click(function() {displayPage('settings')})
 				$("#play_button").click(loginUser)
-				$("#play_button").click(loginUser)
-
 				$("#register_submit").click(registerUser)
+				$("#settings_apply").click(applySettings)
 
 				$(document).on("keyup", 
 					function (e) {
 						let code = e.keyCode || e.which
-						//alert('key pressed: ' + code);
+						//alert('key pressed: ' + code);  	//number
+						//alert('key pressed: ' + e.key); 	//name
 						if(code == 27) /*ESC key pressed*/ {
 							$('#about_modal').modal('hide')
 						}
-					});
-
+					}
+				);
 
 				//init pages
 				pages['welcome'] = $('#welcome_page')
@@ -154,6 +153,68 @@
 				else {
 					window.alert("User doesn't exist")
 				}
+
+				//start game
+				context = canvas.getContext("2d");
+				Start();
+			}
+
+
+			//************SETTINGS ************
+			function applySettings() {
+				if(!checkSettings()){ return }
+				//Here we set the global variables in the app.js file
+				pickup_5_color = $("#settings_5_point_color").val()
+				pickup_15_color = $("#settings_15_point_color").val()
+				pickup_25_color = $("#settings_25_point_color").val()
+				max_time = $("#settings_time").val()
+				num_of_pickups = $("#settings_pickups").val()
+				num_of_enemies = $("#settings_enemies").val()
+				window.alert("Settings applied")
+			}
+
+			function checkSettings() {
+				if($("#settings_5_point_color").val() === "" ||
+					$("#settings_15_point_color").val() === "" ||
+					$("#settings_25_point_color").val() === "" ||
+					$("#settings_time").val() === "" ||
+					$("#settings_pickups").val() === "" ||
+					$("#settings_enemies").val()=== "") {
+						window.alert("Please fill out all fields")
+						return false
+				}
+				else if($("#settings_time").val() < 60 ) {
+					window.alert("Max time must be more than 60 seconds")
+					return false
+				}
+				else if($("#settings_pickups").val() < 50 || $("#settings_pickups").val() > 90) {
+					window.alert("Number of pickups not in valid range")
+					return false
+				}
+				else if($("#settings_enemies").val() < 1 || $("#settings_enemies").val() > 4) {
+					window.alert("Number of enemies not in valid range")
+					return false
+				}
+				return true
+			}
+
+			//action : int => 0: up, 1: down, 2: left, 3: right
+			function getMovementKey(direction) {
+				let keys = [
+					{variable: up_key, display: $("#up_value")}, 
+					{variable: down_key, display: $("#down_value")},
+					{variable: left_key, display: $("#left_value")},
+					{variable: right_key, display: $("#right_value")},
+				]
+				let keyToChange = keys[direction]
+				if(keyToChange){
+					window.alert("please press a button")
+					
+				}
+			}
+
+			function randomizeSettings() {
+
 			}
 
 		</script>
@@ -183,9 +244,7 @@
 			</div>
 		</nav>
 
-
 		<section>
-
 			<!-- WELCOME PAGE -->
 			<div id="welcome_page">
 				Welcome to Pacman!
@@ -221,15 +280,14 @@
 			<!-- LOGIN PAGE -->
 			<div id="login_page" style="display: none;">
 				<label for="username">User Name:</label><br>
-				<input type="text" id="login_username" name="uname"><br>
+				<input type="text" id="login_username" name="uname" value="p"><br>
 
 				<label for="password">Password:</label><br>
-				<input type="password" id="login_password" name="pass"><br>
+				<input type="password" id="login_password" name="pass" value="p"><br>
 				<button id="play_button" type="button" >Login & Play!</button>
 			</div>
 
-			<!-- ABOUT PAGE -->
-			<!-- Modal -->
+			<!-- ABOUT MODAL -->
 			<div id="about_modal" class="modal fade" role="dialog">
 				<div class="modal-dialog">
 
@@ -264,29 +322,33 @@
 
 			<!-- SETTINGS PAGE -->
 			<div id="settings_page" style="display: none;">
-				<label>Controls:</label><br><br>
-				<li><button id="settings_up" type="button">Up</button>&emsp;<kbd id="up_value">Up</kbd><br></li>
-				<li><button id="settings_down" type="button">Down</button>&emsp;<kbd id="down_value">Down</kbd><br></li>
-				<li><button id="settings_left" type="button">Left</button>&emsp;<kbd id="left_value">Left</kbd><br></li>
-				<li><button id="settings_right" type="button">Right</button>&emsp;<kbd id="right_value">Right</kbd><br></li><br>
+				<form onsubmit="applySettings()">
+					<label>Controls:</label><br><br>
+					<li><button id="settings_up" type="button" required="required">Up</button>&emsp;<kbd id="up_value">ArrowUp</kbd><br></li>
+					<li><button id="settings_down" type="button" required="required">Down</button>&emsp;<kbd id="down_value">ArrowDown</kbd><br></li>
+					<li><button id="settings_left" type="button" required="required">Left</button>&emsp;<kbd id="left_value">ArrowLeft</kbd><br></li>
+					<li><button id="settings_right" type="button" required="required">Right</button>&emsp;<kbd id="right_value">ArrowRight</kbd><br></li><br>
 
-				<label>Number of pickups (between 50 and 90):</label>
-				<input id="settings_pickups" type="number" min=50 max=90 value=50><br><br>	
+					<label>Number of pickups (between 50 and 90):</label>
+					<input id="settings_pickups" type="number" min=50 max=90 value=50><br><br>	
 
-				<label>Colors:</label>
-				<li>5 point pickup: <input id="settings_5_point_color" type="color"><br></li>
-				<li>15 point pickup: <input id="settings_15_point_color" type="color"><br></li>
-				<li>25 point pickup: <input id="settings_25_point_color" type="color"><br></li><br>
-				
-				<label>Number of enemies:</label>
-				<input id="settings_enemies" type="number" min=1 max=4 value=1><br><br>
+					<label>Colors:</label>
+					<li>5 point pickup: <input id="settings_5_point_color" type="color" required="required"><br></li>
+					<li>15 point pickup: <input id="settings_15_point_color" type="color" required="required"><br></li>
+					<li>25 point pickup: <input id="settings_25_point_color" type="color" required="required"><br></li><br>
+					
+					<label>Number of enemies:</label>
+					<input id="settings_enemies" type="number" min=1 max=4 value=1 required="required"><br><br>
 
-				<label>Max Time (minimum of 60s):</label>
-				<input id="settings_time" type="number" min=60 value=60><br><br>
+					<label>Max Time in seconds (minimum of 60s):</label>
+					<input id="settings_time" type="number" min=60 value=60 required="required"><br><br>
 
-				<button id="settings_random" type="button" >Randomize settings</button><br>
-				<button id="settings_apply" type="button" >Apply</button><br><br>
-				
+					<button id="settings_random" type="button"> Randomize settings </button><br>
+					<button id="settings_apply" type="button"> Apply </button><br><br>
+					<!-- <button id="settings_apply" type="submit"> Apply </button><br><br>  
+						This doesnt work properly because it refreshes the page
+						We need to manually do the validation without the submit option-->
+				</form>
 			</div>
 
 			<!-- GAME PAGE -->
