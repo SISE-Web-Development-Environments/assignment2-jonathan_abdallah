@@ -34,8 +34,18 @@
 				$("#nav_login_button").click(function() {displayPage('login')})
 				$("#nav_settings_button").click(function() {displayPage('settings')})
 				$("#play_button").click(loginUser)
+				$("#play_button").click(loginUser)
 
 				$("#register_submit").click(registerUser)
+
+				$(document).on("keyup", 
+					function (e) {
+						let code = e.keyCode || e.which
+						//alert('key pressed: ' + code);
+						if(code == 27) /*ESC key pressed*/ {
+							$('#about_modal').modal('hide')
+						}
+					});
 
 
 				//init pages
@@ -126,7 +136,6 @@
 			}
 
 
-
 			//************** LOGIN ************
 			function loginUser() {
 				let username = $('#login_username').val()
@@ -170,7 +179,7 @@
 				<button id="nav_settings_button" type="button" >Settings</button>
 				<br><br><br>
 				<!-- Trigger the modal with a button -->
-				<button type="button" data-toggle="modal" data-target="#myModal">About</button>
+				<button id="nav_about_button" type="button" data-toggle="modal" data-target="#about_modal">About</button>
 			</div>
 		</nav>
 
@@ -221,7 +230,7 @@
 
 			<!-- ABOUT PAGE -->
 			<!-- Modal -->
-			<div id="myModal" class="modal fade" role="dialog">
+			<div id="about_modal" class="modal fade" role="dialog">
 				<div class="modal-dialog">
 
 					<!-- Modal content-->
@@ -255,7 +264,29 @@
 
 			<!-- SETTINGS PAGE -->
 			<div id="settings_page" style="display: none;">
-				TODO:
+				<label>Controls:</label><br><br>
+				<li><button id="settings_up" type="button">Up</button><br></li>
+				<li><button id="settings_down" type="button">Down</button><br></li>
+				<li><button id="settings_left" type="button">Left</button><br></li>
+				<li><button id="settings_right" type="button">Right</button><br></li><br>
+
+				<label>Number of pickups (between 50 and 90):</label>
+				<input id="settings_pickups" type="number" min=50 max=90 value=50><br><br>	
+
+				<label>Colors:</label>
+				<li>5 point pickup: <input id="settings_5_point_color" type="color"><br></li>
+				<li>15 point pickup: <input id="settings_15_point_color" type="color"><br></li>
+				<li>25 point pickup: <input id="settings_25_point_color" type="color"><br></li><br>
+				
+				<label>Number of enemies:</label>
+				<input id="settings_enemies" type="number" min=1 max=4 value=1><br><br>
+
+				<label>Max Time (minimum of 60s):</label>
+				<input id="settings_time" type="number" min=60 value=60><br><br>
+
+				<button id="settings_random" type="button" >Randomize settings</button><br>
+				<button id="settings_apply" type="button" >Apply</button><br><br>
+				
 			</div>
 
 			<!-- GAME PAGE -->
