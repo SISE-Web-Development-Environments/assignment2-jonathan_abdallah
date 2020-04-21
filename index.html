@@ -264,12 +264,19 @@
 
 			<!-- SETTINGS PAGE -->
 			<div id="settings_page" style="display: none;">
-				<label>Controls TODO</label><br><br>
+				<label>Controls:</label><br><br>
+				<li><button id="settings_up" type="button">Up</button><br></li>
+				<li><button id="settings_down" type="button">Down</button><br></li>
+				<li><button id="settings_left" type="button">Left</button><br></li>
+				<li><button id="settings_right" type="button">Right</button><br></li><br>
 
 				<label>Number of pickups (between 50 and 90):</label>
 				<input id="settings_pickups" type="number" min=50 max=90 value=50><br><br>	
 
-				<label>Colors: TODO</label><br><br>
+				<label>Colors:</label>
+				<li>5 point pickup: <input id="settings_5_point_color" type="color"><br></li>
+				<li>15 point pickup: <input id="settings_15_point_color" type="color"><br></li>
+				<li>25 point pickup: <input id="settings_25_point_color" type="color"><br></li><br>
 				
 				<label>Number of enemies:</label>
 				<input id="settings_enemies" type="number" min=1 max=4 value=1><br><br>
@@ -279,6 +286,7 @@
 
 				<button id="settings_random" type="button" >Randomize settings</button><br>
 				<button id="settings_apply" type="button" >Apply</button><br><br>
+				
 			</div>
 
 			<!-- GAME PAGE -->
