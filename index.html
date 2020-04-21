@@ -25,7 +25,7 @@
 				$("#nav_login_button").click(function() {displayPage('login')})
 				$("#nav_about_button").click(function() {displayPage('about')})
 				$("#nav_settings_button").click(function() {displayPage('settings')})
-				$("#play_button").click(function() {displayPage('game')})
+				$("#play_button").click(loginUser)
 
 				$("#register_submit").click(registerUser)
 
@@ -39,7 +39,7 @@
 				pages['game'] = $('#game')
 
 				//init users
-				users.push({name: "p", password: "p"})
+				users.push({username: "p", password: "p"})
 			});
 
 			//hides all pages except the one that is named
@@ -116,6 +116,28 @@
 				return true
 			}
 
+
+
+			//************** LOGIN ************
+			function loginUser() {
+				let username = $('#login_username').val()
+				let password = $('#login_password').val()
+				let user = users.find(function(u) {
+						return u.username === username
+					})
+				if(user) {
+					if(user.password === password) {
+						displayPage('game')
+					}
+					else {
+						window.alert("Wrong password")
+					}
+				}
+				else {
+					window.alert("User doesn't exist")
+				}
+			}
+
 		</script>
 
 
@@ -179,6 +201,11 @@
 
 			<!-- LOGIN PAGE -->
 			<div id="login_page" style="display: none;">
+				<label for="username">User Name:</label><br>
+				<input type="text" id="login_username" name="uname"><br>
+
+				<label for="password">Password:</label><br>
+				<input type="password" id="login_password" name="pass"><br>
 				<button id="play_button" type="button" >Login & Play!</button>
 			</div>
 
