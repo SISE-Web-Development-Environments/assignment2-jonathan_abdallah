@@ -34,8 +34,25 @@
 				$("#nav_login_button").click(function() {displayPage('login')})
 				$("#nav_settings_button").click(function() {displayPage('settings')})
 				$("#play_button").click(loginUser)
+				$("#play_button").click(loginUser)
+
+				// $("#nav_about_button").click(function () {
+				// 	$('#about_modal').modal({
+				// 		show: true,
+				// 		keyboard: true
+				// 	});
+				// });
 
 				$("#register_submit").click(registerUser)
+
+				$(document).on("keyup", 
+					function (e) {
+						let code = e.keyCode || e.which
+						//alert('key pressed: ' + code);
+						if(code == 27) /*ESC key pressed*/ {
+							$('#about_modal').modal('hide')
+						}
+					});
 
 
 				//init pages
@@ -170,7 +187,7 @@
 				<button id="nav_settings_button" type="button" >Settings</button>
 				<br><br><br>
 				<!-- Trigger the modal with a button -->
-				<button type="button" data-toggle="modal" data-target="#myModal">About</button>
+				<button id="nav_about_button" type="button" data-toggle="modal" data-target="#about_modal">About</button>
 			</div>
 		</nav>
 
@@ -221,7 +238,7 @@
 
 			<!-- ABOUT PAGE -->
 			<!-- Modal -->
-			<div id="myModal" class="modal fade" role="dialog">
+			<div id="about_modal" class="modal fade" role="dialog">
 				<div class="modal-dialog">
 
 					<!-- Modal content-->
