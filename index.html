@@ -66,9 +66,10 @@
 
 				if(checkRegisterInput(fname, username, password, email, date)) {
 					if(users.find(u => u.username === username)){
-						window.alert("Username already exists")
+						window.alert("Username already exists!")
 					} else {
 						users.push({username: username, password: password})
+						window.alert("User registered!")
 					}
 				}
 			}
