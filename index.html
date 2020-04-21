@@ -4,6 +4,15 @@
 		<script src="./jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
 		<link rel="stylesheet" type="text/css"  href="style.css" /> 
+
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+		<!-- jQuery library -->
+		<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 	</head>
 
 
@@ -23,7 +32,6 @@
 				$("#nav_welcome_button").click(function() {displayPage('welcome')})
 				$("#nav_register_button").click(function() {displayPage('register')})
 				$("#nav_login_button").click(function() {displayPage('login')})
-				$("#nav_about_button").click(function() {displayPage('about')})
 				$("#nav_settings_button").click(function() {displayPage('settings')})
 				$("#play_button").click(loginUser)
 
@@ -161,7 +169,8 @@
 				<br><br><br>
 				<button id="nav_settings_button" type="button" >Settings</button>
 				<br><br><br>
-				<button id="nav_about_button" type="button" >About</button>
+				<!-- Trigger the modal with a button -->
+				<button type="button" data-toggle="modal" data-target="#myModal">About</button>
 			</div>
 		</nav>
 
@@ -211,8 +220,37 @@
 			</div>
 
 			<!-- ABOUT PAGE -->
-			<div id="about_page" style="display: none;">
-				TODO:
+			<!-- Modal -->
+			<div id="myModal" class="modal fade" role="dialog">
+				<div class="modal-dialog">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">About</h4>
+					</div>
+					<div class="modal-body">
+						<p>
+							Students:
+						</p>
+						<ul>
+							<li>Jonathan Wolf</li>
+							<li>Abdalla Asaad</li>
+						</ul>
+
+						<p>
+							Templates used:
+						</p>
+						<ul>
+							<li><a href="https://www.w3schools.com/bootstrap/bootstrap_modal.asp">https://www.w3schools.com/bootstrap/bootstrap_modal.asp</a></li>
+						</ul>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+					</div>
+				</div>
 			</div>
 
 			<!-- SETTINGS PAGE -->
