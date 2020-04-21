@@ -36,13 +36,6 @@
 				$("#play_button").click(loginUser)
 				$("#play_button").click(loginUser)
 
-				// $("#nav_about_button").click(function () {
-				// 	$('#about_modal').modal({
-				// 		show: true,
-				// 		keyboard: true
-				// 	});
-				// });
-
 				$("#register_submit").click(registerUser)
 
 				$(document).on("keyup", 
@@ -141,7 +134,6 @@
 				}
 				return true
 			}
-
 
 
 			//************** LOGIN ************
@@ -272,7 +264,21 @@
 
 			<!-- SETTINGS PAGE -->
 			<div id="settings_page" style="display: none;">
-				TODO:
+				<label>Controls TODO</label><br><br>
+
+				<label>Number of pickups (between 50 and 90):</label>
+				<input id="settings_pickups" type="number" min=50 max=90 value=50><br><br>	
+
+				<label>Colors: TODO</label><br><br>
+				
+				<label>Number of enemies:</label>
+				<input id="settings_enemies" type="number" min=1 max=4 value=1><br><br>
+
+				<label>Max Time (minimum of 60s):</label>
+				<input id="settings_time" type="number" min=60 value=60><br><br>
+
+				<button id="settings_random" type="button" >Randomize settings</button><br>
+				<button id="settings_apply" type="button" >Apply</button><br><br>
 			</div>
 
 			<!-- GAME PAGE -->
