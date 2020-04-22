@@ -199,6 +199,10 @@
 						window.alert("Please fill out all fields")
 						return false
 				}
+				if(keys[0].value == -1 || keys[1].value == -1 || keys[2].value == -1 || keys[3].value == -1) {
+					window.alert("All control buttons must be defined")
+					return false
+				}
 				else if($("#settings_time").val() < 60 ) {
 					window.alert("Max time must be more than 60 seconds")
 					return false
@@ -248,6 +252,8 @@
 					//window.alert("please press a button")
 					keys.forEach(k => k.listenToKeyPress = false)
 					keyToChange.listenToKeyPress = true
+					keyToChange.value = -1
+					keyToChange.display.text("UNDEFINED - PLEASE PRESS A BUTTON")
 				}
 			}
 				
