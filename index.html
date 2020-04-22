@@ -32,7 +32,7 @@
 				$("#nav_welcome_button").click(function() {displayPage('welcome')})
 				$("#nav_register_button").click(function() {displayPage('register')})
 				$("#nav_login_button").click(function() {displayPage('login')})
-				$("#nav_settings_button").click(function() {displayPage('settings')})
+				// $("#nav_settings_button").click(function() {displayPage('settings')})
 				$("#play_button").click(loginUser)
 				$("#register_submit").click(registerUser)
 				$("#settings_apply").click(applySettings)
@@ -145,7 +145,7 @@
 					})
 				if(user) {
 					if(user.password === password) {
-						displayPage('game')
+						displayPage('settings')
 					}
 					else {
 						window.alert("Wrong password")
@@ -171,7 +171,8 @@
 				max_time = $("#settings_time").val()
 				num_of_pickups = $("#settings_pickups").val()
 				num_of_enemies = $("#settings_enemies").val()
-				window.alert("Settings applied")
+				//window.alert("Settings applied")
+				displayPage("game")
 			}
 
 			function checkSettings() {
@@ -216,7 +217,6 @@
 				let keyToChange = keys[direction]
 				if(keyToChange){
 					window.alert("please press a button")
-					
 				}
 			}
 				
@@ -231,63 +231,25 @@
 					});
 				});
 
-					// getting a random color
-					var letters = '0123456789ABCDEF';
-					let color5 = '#',color15 = '#',color25 = '#';
-					for (var i = 0; i < 6; i++) {
-						color5 += letters[Math.floor(Math.random() * 16)];
-						color15 += letters[Math.floor(Math.random() * 16)];
-						color25 += letters[Math.floor(Math.random() * 16)];
-					} //
-
-					$(document).ready(function(){
-						$("#settings_random").click(function(){
-							$("#settings_5_point_color").val(color5);
-						});
-					});
-
-					$(document).ready(function(){
-						$("#settings_random").click(function(){
-							$("#settings_15_point_color").val(color15);
-						});
-					});
-
-					$(document).ready(function(){
-						$("#settings_random").click(function(){
-							$("#settings_25_point_color").val(color25);
-						});
-					});
-
-					var min=1 ,max=4;  
-					var random2 = parseInt(Math.random() * (+max - +min +1) + +min);
-					$(document).ready(function(){
-						$("#settings_random").click(function(){
-							$("#settings_enemies").val(random2);
-						});
-					});
-
-					$(document).ready(function(){
-						$("#settings_random").click(function(){
-							$("#upinput").val("UpArrow");
-						});
-					});
-					$(document).ready(function(){
-						$("#settings_random").click(function(){
-							$("#downinput").val("DownArrow");
-						});
-					});
-					$(document).ready(function(){
-						$("#settings_random").click(function(){
-							$("#leftinput").val("LeftArrow");
-						});
-					});
-					$(document).ready(function(){
-						$("#settings_random").click(function(){
-							$("#rightinput").val("RightArrow");
-						});
-					});
-
+				// getting a random color
+				var letters = '0123456789ABCDEF';
+				let color5 = '#',color15 = '#',color25 = '#';
+				for (var i = 0; i < 6; i++) {
+					color5 += letters[Math.floor(Math.random() * 16)];
+					color15 += letters[Math.floor(Math.random() * 16)];
+					color25 += letters[Math.floor(Math.random() * 16)];
+				}
 			
+				var min=1 ,max=4;  
+				var random2 = parseInt(Math.random() * (+max - +min +1) + +min);
+				$("#settings_5_point_color").val(color5);
+				$("#settings_15_point_color").val(color15);
+				$("#settings_25_point_color").val(color25);
+				$("#settings_enemies").val(random2);
+				$("#upinput").val("UpArrow");
+				$("#downinput").val("DownArrow");
+				$("#leftinput").val("LeftArrow");
+				$("#rightinput").val("RightArrow");
 			}
 
 		</script>
@@ -320,8 +282,9 @@
 				<br><br><br>
 				<button id="nav_register_button" type="button" >Register</button>
 				<br><br><br>
-				<button id="nav_settings_button" type="button" >Settings</button>
-				<br><br><br>
+				<!-- <button id="nav_settings_button" type="button" >Settings</button>
+				<br><br><br> -->
+
 				<!-- Trigger the modal with a button -->
 				<button id="nav_about_button" type="button" data-toggle="modal" data-target="#about_modal">About</button>
 			</div>
@@ -427,7 +390,7 @@
 					<input id="settings_time" type="number" min=60 value=60 required="required"><br><br>
 
 					<button id="settings_random" type="button" onclick="randomizeSettings()" > Randomize settings </button><br>
-					<button id="settings_apply" type="button" onclick=""> Apply </button><br><br>
+					<button id="settings_apply" type="button" onclick=""> Apply & Play! </button><br><br>
 					<!-- <button id="settings_apply" type="submit"> Apply </button><br><br>  
 						This doesnt work properly because it refreshes the page
 						We need to manually do the validation without the submit option-->

@@ -7,19 +7,18 @@ var start_time;
 var time_elapsed;
 var interval;
 
-//default settings
+
 var up_key = 38;
 var down_key = 40;
 var left_key = 37;
 var right_key = 39;
-var pickup_5_color = color5;
-var pickup_15_color = color15;
-var pickup_25_color = color25;
-var max_time = '#ffffff'
-var num_of_pickups = $("#settings_pickups").val();
-var num_of_enemies = 1
-
-
+//these values will get their values from the Apply Settings button
+var pickup_15_color;
+var pickup_15_color;
+var pickup_25_color;
+var max_time;
+var num_of_pickups;
+var num_of_enemies;
 
 function Start() {
 
