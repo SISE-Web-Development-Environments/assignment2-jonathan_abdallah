@@ -22,10 +22,10 @@
 			//globals
 			let pages = {}				//dictionary for all the pages		
 			let users = []				// { username: string, password: string }
+			let keys = []
 			
 			//init
 			$(document).ready(function(){
-
 				//init buttons
 				$("#login_button").click(function() {displayPage('login')})
 				$("#register_button").click(function() {displayPage('register')})
@@ -40,15 +40,30 @@
 				$(document).on("keyup", 
 					function (e) {
 						let code = e.keyCode || e.which
+						let name = e.key
 						//alert('key pressed: ' + code);  	//number
 						//alert('key pressed: ' + e.key); 	//name
 						if(code == 27) /*ESC key pressed*/ {
 							$('#about_modal').modal('hide')
 						}
+						// keys.forEach(k => {
+						// 	if(k.listenToKeyPress) {
+						// 		k.value = code
+						// 		k.display.val(name)
+						// 		k.listenToKeyPress = false
+						// 	}
+						// })
 					}
 				);
 
-				//init pages
+				//init vars
+				keys = [
+					{value: 38, display: $("#up_value"), listenToKeyPress: false}, 
+					{value: 40, display: $("#down_value"), listenToKeyPress: false},
+					{value: 37, display: $("#left_value"), listenToKeyPress: false},
+					{value: 39, display: $("#right_value"), listenToKeyPress: false},
+				]
+
 				pages['welcome'] = $('#welcome_page')
 				pages['login'] = $('#login_page')
 				pages['register'] = $('#register_page')
@@ -154,10 +169,6 @@
 				else {
 					window.alert("User doesn't exist")
 				}
-
-				//start game
-				context = canvas.getContext("2d");
-				Start();
 			}
 
 
@@ -171,8 +182,11 @@
 				max_time = $("#settings_time").val()
 				num_of_pickups = $("#settings_pickups").val()
 				num_of_enemies = $("#settings_enemies").val()
-				//window.alert("Settings applied")
-				displayPage("game")
+				up_key = keys[0].value;
+				down_key = keys[1].value;
+				left_key = keys[2].value;
+				right_key = keys[3].value;
+				startGame()
 			}
 
 			function checkSettings() {
@@ -184,6 +198,10 @@
 					$("#settings_enemies").val()=== "") {
 						window.alert("Please fill out all fields")
 						return false
+				}
+				if(keys[0].value == -1 || keys[1].value == -1 || keys[2].value == -1 || keys[3].value == -1) {
+					window.alert("All control buttons must be defined")
+					return false
 				}
 				else if($("#settings_time").val() < 60 ) {
 					window.alert("Max time must be more than 60 seconds")
@@ -197,26 +215,45 @@
 					window.alert("Number of enemies not in valid range")
 					return false
 				}
-				else if( ($("#upinput").val().length > 1 && $("#upinput").val() != "UpArrow") || ($("#downinput").val().length > 1 && $("#downinput").val() != "DownArrow") ||
-				 ($("#leftinput").val().length > 1 && $("#leftinput").val() != "LeftArrow") || 
-				 ($("#rightinput").val().length > 1 && $("#rightinput").val() != "RightArrow")) {
-							window.alert("inValid keys length")
-					return false
-				}
+				// else if( ($("#up_value").text().length > 1 && $("#up_value").text() != "UpArrow") || ($("#down_value").text().length > 1 && $("#down_value").text() != "DownArrow") ||
+				//  ($("#leftinput").text().length > 1 && $("#leftinput").text() != "LeftArrow") || 
+				//  ($("#rightinput").text().length > 1 && $("#rightinput").text() != "RightArrow")) {
+				// 			window.alert("inValid keys length")
+				// 	return false
+				// }
 				return true
 			}
 
+			function startGame() {
+				context = canvas.getContext("2d");
+				displayPage("game")
+				Start();
+			}
+
+			//set control key
+			$(document).on("keyup", 
+				function (e) {
+					let code = e.keyCode || e.which
+					let name = e.key
+					keys.forEach(k => {
+						if(k.listenToKeyPress) {
+							k.value = code
+							k.display.text(name)
+							k.listenToKeyPress = false
+						}
+					})
+				}
+			);
+
 			//action : int => 0: up, 1: down, 2: left, 3: right
-			function getMovementKey(direction) {
-				let keys = [
-					{variable: up_key, display: $("#up_value")}, 
-					{variable: down_key, display: $("#down_value")},
-					{variable: left_key, display: $("#left_value")},
-					{variable: right_key, display: $("#right_value")},
-				]
+			function recordMovementKey(direction) {
 				let keyToChange = keys[direction]
 				if(keyToChange){
-					window.alert("please press a button")
+					//window.alert("please press a button")
+					keys.forEach(k => k.listenToKeyPress = false)
+					keyToChange.listenToKeyPress = true
+					keyToChange.value = -1
+					keyToChange.display.text("UNDEFINED - PLEASE PRESS A BUTTON")
 				}
 			}
 				
@@ -246,10 +283,19 @@
 				$("#settings_15_point_color").val(color15);
 				$("#settings_25_point_color").val(color25);
 				$("#settings_enemies").val(random2);
-				$("#upinput").val("UpArrow");
-				$("#downinput").val("DownArrow");
-				$("#leftinput").val("LeftArrow");
-				$("#rightinput").val("RightArrow");
+				
+				keys[0].value = 38
+				keys[0].display.text("UpArrow")
+				keys[0].listenToKeyPress = false
+				keys[1].value = 40
+				keys[1].display.text("DownArrow")
+				keys[1].listenToKeyPress = false
+				keys[2].value = 37
+				keys[2].display.text("LeftArrow")
+				keys[2].listenToKeyPress = false
+				keys[3].value = 39
+				keys[3].display.text("RightArrow")
+				keys[3].listenToKeyPress = false
 			}
 
 		</script>
@@ -370,10 +416,10 @@
 			<div id="settings_page" style="display: none;">
 				<form onsubmit="applySettings()">
 					<label id="settings_lable">Controls:</label><br>enter the controls you need<br>
-					<li>  <input id="upinput" value='w'></input>     <button id="settings_up" type="button" required="required">Up</button>        &emsp;<kbd id="up_value">ArrowUp</kbd><br></li>
-					<li>  <input id="downinput" value='s'></input>   <button id="settings_down" type="button" required="required">Down</button>    &emsp;<kbd id="down_value">ArrowDown</kbd><br></li>
-					<li>  <input id="leftinput" value='a' ></input>   <button id="settings_left" type="button" required="required">Left</button>    &emsp;<kbd id="left_value">ArrowLeft</kbd><br></li>
-					<li>  <input id="rightinput" value='d' ></input>     <button id="settings_right" type="button" required="required">Right</button>  &emsp;<kbd id="right_value">ArrowRight</kbd><br></li><br>
+					<li><button id="settings_up" type="button" required="required" onclick="recordMovementKey(0)">Up</button>        &emsp;<kbd id="up_value">ArrowUp</kbd><br></li>
+					<li><button id="settings_down" type="button" required="required" onclick="recordMovementKey(1)">Down</button>    &emsp;<kbd id="down_value">ArrowDown</kbd><br></li>
+					<li><button id="settings_left" type="button" required="required" onclick="recordMovementKey(2)">Left</button>    &emsp;<kbd id="left_value">ArrowLeft</kbd><br></li>
+					<li><button id="settings_right" type="button" required="required" onclick="recordMovementKey(3)">Right</button>  &emsp;<kbd id="right_value">ArrowRight</kbd><br></li><br>
 
 					<label>Number of pickups (between 50 and 90):</label>
 					<input id="settings_pickups" type="number" min=50 max=90 value=50><br><br>	

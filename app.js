@@ -21,7 +21,6 @@ var num_of_pickups;
 var num_of_enemies;
 
 function Start() {
-
 	board = new Array();
 	score = 0;
 	pac_color = "#ffff00";
