@@ -12,12 +12,13 @@ var up_key = 38;
 var down_key = 40;
 var left_key = 37;
 var right_key = 39;
-var pickup_5_color = '#000000'
-var pickup_15_color = '#000000'
-var pickup_25_color = '#000000'
+var pickup_5_color = color5;
+var pickup_15_color = color15;
+var pickup_25_color = color25;
 var max_time = '#ffffff'
-var num_of_pickups = 50
+var num_of_pickups = $("#settings_pickups").val();
 var num_of_enemies = 1
+
 
 
 function Start() {
@@ -26,7 +27,7 @@ function Start() {
 	score = 0;
 	pac_color = "#ffff00";
 	var cnt = 100;
-	var food_remain = 50;
+	var food_remain =  $("#settings_pickups").val();
 	var pacman_remain = 1;
 	start_time = new Date();
 	for (var i = 0; i < 10; i++) {
@@ -64,13 +65,7 @@ function Start() {
 		food_remain--;
 	}
 	keysDown = {};
-	addEventListener(
-		"keydown",
-		function(e) {
-			keysDown[e.keyCode] = true;
-		},
-		false
-	);
+	addEventListener("keydown",function(e) {keysDown[e.keyCode] = true;},false);
 	addEventListener(
 		"keyup",
 		function(e) {

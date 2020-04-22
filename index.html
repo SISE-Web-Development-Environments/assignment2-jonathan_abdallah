@@ -13,6 +13,7 @@
 
 		<!-- Latest compiled JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 	</head>
 
 
@@ -195,6 +196,12 @@
 					window.alert("Number of enemies not in valid range")
 					return false
 				}
+				else if( ($("#upinput").val().length > 1 && $("#upinput").val() != "UpArrow") || ($("#downinput").val().length > 1 && $("#downinput").val() != "DownArrow") ||
+				 ($("#leftinput").val().length > 1 && $("#leftinput").val() != "LeftArrow") || 
+				 ($("#rightinput").val().length > 1 && $("#rightinput").val() != "RightArrow")) {
+							window.alert("inValid keys length")
+					return false
+				}
 				return true
 			}
 
@@ -212,17 +219,93 @@
 					
 				}
 			}
-
+				
 			function randomizeSettings() {
+				// ************************************************************************* 
+				//$("#settings_lable").append("<br><br>you got the arrows buttons as default")
+				var min=50 ,max=90;  
+				let random1 = parseInt(Math.random() * (+max - +min) + +min);
+				$(document).ready(function(){
+					$("#settings_random").click(function(){
+						$("#settings_pickups").val(random1);
+					});
+				});
 
+					// getting a random color
+					var letters = '0123456789ABCDEF';
+					let color5 = '#',color15 = '#',color25 = '#';
+					for (var i = 0; i < 6; i++) {
+						color5 += letters[Math.floor(Math.random() * 16)];
+						color15 += letters[Math.floor(Math.random() * 16)];
+						color25 += letters[Math.floor(Math.random() * 16)];
+					} //
+
+					$(document).ready(function(){
+						$("#settings_random").click(function(){
+							$("#settings_5_point_color").val(color5);
+						});
+					});
+
+					$(document).ready(function(){
+						$("#settings_random").click(function(){
+							$("#settings_15_point_color").val(color15);
+						});
+					});
+
+					$(document).ready(function(){
+						$("#settings_random").click(function(){
+							$("#settings_25_point_color").val(color25);
+						});
+					});
+
+					var min=1 ,max=4;  
+					var random2 = parseInt(Math.random() * (+max - +min +1) + +min);
+					$(document).ready(function(){
+						$("#settings_random").click(function(){
+							$("#settings_enemies").val(random2);
+						});
+					});
+
+					$(document).ready(function(){
+						$("#settings_random").click(function(){
+							$("#upinput").val("UpArrow");
+						});
+					});
+					$(document).ready(function(){
+						$("#settings_random").click(function(){
+							$("#downinput").val("DownArrow");
+						});
+					});
+					$(document).ready(function(){
+						$("#settings_random").click(function(){
+							$("#leftinput").val("LeftArrow");
+						});
+					});
+					$(document).ready(function(){
+						$("#settings_random").click(function(){
+							$("#rightinput").val("RightArrow");
+						});
+					});
+
+			
 			}
 
 		</script>
 
-
+				<!--  <script>
+				var min=50 ,max=90;  
+							var random = Math.random() * (+max - +min) + +min;
+				$(document).ready(function(){
+				
+				$("#settings_random").click(function(){
+					$("#settings_pickups").val(random);
+				});
+				});
+				</script> -->
 
 	<body>
 
+				
 		<header>
 			<h1>Game Logo</h1>
 		</header>
@@ -323,11 +406,11 @@
 			<!-- SETTINGS PAGE -->
 			<div id="settings_page" style="display: none;">
 				<form onsubmit="applySettings()">
-					<label>Controls:</label><br><br>
-					<li><button id="settings_up" type="button" required="required">Up</button>&emsp;<kbd id="up_value">ArrowUp</kbd><br></li>
-					<li><button id="settings_down" type="button" required="required">Down</button>&emsp;<kbd id="down_value">ArrowDown</kbd><br></li>
-					<li><button id="settings_left" type="button" required="required">Left</button>&emsp;<kbd id="left_value">ArrowLeft</kbd><br></li>
-					<li><button id="settings_right" type="button" required="required">Right</button>&emsp;<kbd id="right_value">ArrowRight</kbd><br></li><br>
+					<label id="settings_lable">Controls:</label><br>enter the controls you need<br>
+					<li>  <input id="upinput" value='w'></input>     <button id="settings_up" type="button" required="required">Up</button>        &emsp;<kbd id="up_value">ArrowUp</kbd><br></li>
+					<li>  <input id="downinput" value='s'></input>   <button id="settings_down" type="button" required="required">Down</button>    &emsp;<kbd id="down_value">ArrowDown</kbd><br></li>
+					<li>  <input id="leftinput" value='a' ></input>   <button id="settings_left" type="button" required="required">Left</button>    &emsp;<kbd id="left_value">ArrowLeft</kbd><br></li>
+					<li>  <input id="rightinput" value='d' ></input>     <button id="settings_right" type="button" required="required">Right</button>  &emsp;<kbd id="right_value">ArrowRight</kbd><br></li><br>
 
 					<label>Number of pickups (between 50 and 90):</label>
 					<input id="settings_pickups" type="number" min=50 max=90 value=50><br><br>	
@@ -343,8 +426,8 @@
 					<label>Max Time in seconds (minimum of 60s):</label>
 					<input id="settings_time" type="number" min=60 value=60 required="required"><br><br>
 
-					<button id="settings_random" type="button"> Randomize settings </button><br>
-					<button id="settings_apply" type="button"> Apply </button><br><br>
+					<button id="settings_random" type="button" onclick="randomizeSettings()" > Randomize settings </button><br>
+					<button id="settings_apply" type="button" onclick=""> Apply </button><br><br>
 					<!-- <button id="settings_apply" type="submit"> Apply </button><br><br>  
 						This doesnt work properly because it refreshes the page
 						We need to manually do the validation without the submit option-->
