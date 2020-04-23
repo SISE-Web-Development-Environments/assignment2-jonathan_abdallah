@@ -7,6 +7,10 @@ var start_time;
 var time_elapsed;
 var interval;
 
+// sounds
+var eatingPointsSound ;
+var readySound;
+
 
 var up_key = 38;
 var down_key = 40;
@@ -17,15 +21,36 @@ var pickup_15_color;
 var pickup_15_color;
 var pickup_25_color;
 var max_time;
-var num_of_pickups;
+var num_of_pickups=$("#settings_pickups").val();
 var num_of_enemies;
 
+
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }
+    this.stop = function(){
+        this.sound.pause();
+    }    
+}
+
 function Start() {
+
+	eatingPointsSound = new sound("eating.mp3");
+	readySound = new sound("ready.mp3");
+	readySound.play();
+
 	board = new Array();
 	score = 0;
 	pac_color = "#ffff00";
 	var cnt = 100;
-	var food_remain =  $("#settings_pickups").val();
+	var food_remain =  num_of_pickups;
 	var pacman_remain = 1;
 	start_time = new Date();
 	for (var i = 0; i < 10; i++) {
@@ -103,12 +128,14 @@ function Draw() {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
+	var x = GetKeyPressed();
 	for (var i = 0; i < 10; i++) {
 		for (var j = 0; j < 10; j++) {
 			var center = new Object();
 			center.x = i * 60 + 30;
 			center.y = j * 60 + 30;
 			if (board[i][j] == 2) {
+				
 				context.beginPath();
 				context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
 				context.lineTo(center.x, center.y);
@@ -118,6 +145,53 @@ function Draw() {
 				context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
 				context.fill();
+				
+				/*if(x==1){
+					//clearRect(center.x, center.y, 1.2*Math.PI,1.8*Math.PI)
+					context.beginPath();
+				context.arc(center.x, center.y, 30, 1.2*Math.PI,1.8*Math.PI,true); // half circle
+				context.lineTo(center.x, center.y);
+				context.fillStyle = pac_color; //color
+				context.fill();
+				context.beginPath();
+				context.arc(center.x + 15, center.y +2, 5, 0, 2 * Math.PI); // circle
+				context.fillStyle = "black"; //color
+				context.fill();
+				}
+				if(x==2){
+					context.beginPath();
+				context.arc(center.x, center.y, 30, 0.25*Math.PI,0.65*Math.PI,true); // half circle
+				context.lineTo(center.x, center.y);
+				context.fillStyle = pac_color; //color
+				context.fill();
+				context.beginPath();
+				context.arc(center.x + 15, center.y -4, 5, 0, 2 * Math.PI); // circle
+				context.fillStyle = "black"; //color
+				context.fill();
+				}
+				if(x==3){
+					context.beginPath();
+					context.arc(center.x, center.y, 30, 0.75 * Math.PI, 1.25 * Math.PI,true); // half circle
+					context.lineTo(center.x, center.y);
+					context.fillStyle = pac_color; //color
+					context.fill();
+					context.beginPath();
+					context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
+					context.fillStyle = "black"; //color
+					context.fill();
+				}
+				if(x==4){
+					context.beginPath();
+					context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+					context.lineTo(center.x, center.y);
+					context.fillStyle = pac_color; //color
+					context.fill();
+					context.beginPath();
+					context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
+					context.fillStyle = "black"; //color
+					context.fill();
+				}*/
+				
 			} else if (board[i][j] == 1) {
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
@@ -157,6 +231,9 @@ function UpdatePosition() {
 		}
 	}
 	if (board[shape.i][shape.j] == 1) {
+		eatingPointsSound.play();
+		readySound.stop();
+				
 		score++;
 	}
 	board[shape.i][shape.j] = 2;
