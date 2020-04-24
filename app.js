@@ -26,6 +26,7 @@ var food_5_remaining; //value is initialized in initFoodAmount()
 var food_15_remaining; //value is initialized in initFoodAmount()
 var food_25_remaining; //value is initialized in initFoodAmount()
 var num_of_enemies;
+var num_of_lives;
 
 //Psuedo Enums
 CELL_EMPTY = 0
@@ -54,12 +55,15 @@ function sound(src) {
     }    
 }
 
+var gameIsOver = false
 function Start() {
+	gameIsRunning = false
 	eatingPointsSound = new sound("eating.mp3");
 	readySound = new sound("ready.mp3");
 	//readySound.play();
 
 	board = new Array();
+	num_of_lives = 5;
 	score = 0;
 	pac_color = "#ffff00";
 	var cnt = 100;
@@ -273,10 +277,25 @@ function UpdatePosition() {
 	if (score >= 20 && time_elapsed <= 10) {
 		pac_color = "green";
 	}
-	if (score == 50) {
-		window.clearInterval(interval);
-		window.alert("Game completed");
-	} else {
+	
+	if(!gameIsOver) {
+		if (num_of_lives == 0) { //lose
+			window.clearInterval(interval);
+			window.alert("Loser!");
+			gameIsOver = true
+		} 
+		else if(time_elapsed >= max_time && score < 100) { //half win
+			window.clearInterval(interval);
+			window.alert("You are better than " + score.toString() + " points!");
+			gameIsOver = true
+		}
+		else if(time_elapsed >= max_time && score >= 100) { //win
+			window.clearInterval(interval);
+			window.alert("Winner!!!");
+			gameIsOver = true
+		}
+	}
+	if(!gameIsOver) {
 		Draw();
 	}
 }
@@ -310,3 +329,5 @@ function getFoodType() {
 function isFoodCell(cell_value) {
 	return (cell_value == CELL_FOOD_5 || cell_value == CELL_FOOD_15 || cell_value == CELL_FOOD_25)
 }
+
+
