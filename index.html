@@ -47,13 +47,6 @@
 						if(code == 27) /*ESC key pressed*/ {
 							$('#about_modal').modal('hide')
 						}
-						// keys.forEach(k => {
-						// 	if(k.listenToKeyPress) {
-						// 		k.value = code
-						// 		k.display.val(name)
-						// 		k.listenToKeyPress = false
-						// 	}
-						// })
 					}
 				);
 
@@ -220,12 +213,6 @@
 					window.alert("Number of enemies not in valid range")
 					return false
 				}
-				// else if( ($("#up_value").text().length > 1 && $("#up_value").text() != "UpArrow") || ($("#down_value").text().length > 1 && $("#down_value").text() != "DownArrow") ||
-				//  ($("#leftinput").text().length > 1 && $("#leftinput").text() != "LeftArrow") || 
-				//  ($("#rightinput").text().length > 1 && $("#rightinput").text() != "RightArrow")) {
-				// 			window.alert("inValid keys length")
-				// 	return false
-				// }
 				return true
 			}
 
@@ -304,17 +291,6 @@
 			}
 
 		</script>
-
-				<!--  <script>
-				var min=50 ,max=90;  
-							var random = Math.random() * (+max - +min) + +min;
-				$(document).ready(function(){
-				
-				$("#settings_random").click(function(){
-					$("#settings_pickups").val(random);
-				});
-				});
-				</script> -->
 
 	<body>
 

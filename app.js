@@ -25,6 +25,14 @@ var num_of_pickups=$("#settings_pickups").val();
 var num_of_enemies;
 
 
+//Psuedo Enums
+ENUM_FOOD = 1
+ENUM_PACMAN = 2 
+ENUM_GHOST = 3
+ENUM_WALL = 4
+
+
+
 function sound(src) {
     this.sound = document.createElement("audio");
     this.sound.src = src;
@@ -41,7 +49,6 @@ function sound(src) {
 }
 
 function Start() {
-
 	eatingPointsSound = new sound("eating.mp3");
 	readySound = new sound("ready.mp3");
 	readySound.play();
@@ -192,12 +199,12 @@ function Draw() {
 					context.fill();
 				}*/
 				
-			} else if (board[i][j] == 1) {
+			} else if (board[i][j] == ENUM_FOOD) {
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
 				context.fill();
-			} else if (board[i][j] == 4) {
+			} else if (board[i][j] == ENUM_WALL) {
 				context.beginPath();
 				context.rect(center.x - 30, center.y - 30, 60, 60);
 				context.fillStyle = "grey"; //color
