@@ -23,6 +23,7 @@
 			let pages = {}				//dictionary for all the pages		
 			let users = []				// { username: string, password: string }
 			let keys = []
+			let loggedUser
 			
 			//init
 			$(document).ready(function(){
@@ -46,13 +47,6 @@
 						if(code == 27) /*ESC key pressed*/ {
 							$('#about_modal').modal('hide')
 						}
-						// keys.forEach(k => {
-						// 	if(k.listenToKeyPress) {
-						// 		k.value = code
-						// 		k.display.val(name)
-						// 		k.listenToKeyPress = false
-						// 	}
-						// })
 					}
 				);
 
@@ -162,6 +156,8 @@
 					})
 				if(user) {
 					if(user.password === password) {
+						loggedUser = user.username
+						$("#lblUserValue").text(loggedUser)
 						displayPage('settings')
 					}
 					else {
@@ -217,12 +213,6 @@
 					window.alert("Number of enemies not in valid range")
 					return false
 				}
-				// else if( ($("#up_value").text().length > 1 && $("#up_value").text() != "UpArrow") || ($("#down_value").text().length > 1 && $("#down_value").text() != "DownArrow") ||
-				//  ($("#leftinput").text().length > 1 && $("#leftinput").text() != "LeftArrow") || 
-				//  ($("#rightinput").text().length > 1 && $("#rightinput").text() != "RightArrow")) {
-				// 			window.alert("inValid keys length")
-				// 	return false
-				// }
 				return true
 			}
 
@@ -287,31 +277,20 @@
 				$("#settings_enemies").val(random2);
 				
 				keys[0].value = 38
-				keys[0].display.text("UpArrow")
+				keys[0].display.text("ArrowUp")
 				keys[0].listenToKeyPress = false
 				keys[1].value = 40
-				keys[1].display.text("DownArrow")
+				keys[1].display.text("ArrowDown")
 				keys[1].listenToKeyPress = false
 				keys[2].value = 37
-				keys[2].display.text("LeftArrow")
+				keys[2].display.text("ArrowLeft")
 				keys[2].listenToKeyPress = false
 				keys[3].value = 39
-				keys[3].display.text("RightArrow")
+				keys[3].display.text("ArrowRight")
 				keys[3].listenToKeyPress = false
 			}
 
 		</script>
-
-				<!--  <script>
-				var min=50 ,max=90;  
-							var random = Math.random() * (+max - +min) + +min;
-				$(document).ready(function(){
-				
-				$("#settings_random").click(function(){
-					$("#settings_pickups").val(random);
-				});
-				});
-				</script> -->
 
 	<body>
 
@@ -348,7 +327,6 @@
 
 			<!-- REGISTER PAGE -->
 			<div id="register_page" style="display: none;">
-				TODO:
 				<form>
 					<label for="fname">Full Name:</label><br>
 					<input type="text" id="fname" name="fname"><br>
@@ -454,6 +432,10 @@
 				<div id="time">
 					<label for="lblTime">TIME:</label>
 					<input id="lblTime" type="text" />
+				</div>
+				<div id="user">
+					<label id="lblUser">USER:</label>
+					<label id="lblUserValue"></label>
 				</div>
 				<canvas id="canvas" height="600" width="600"></canvas>
 			</div>
