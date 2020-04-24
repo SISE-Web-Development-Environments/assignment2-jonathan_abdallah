@@ -22,9 +22,6 @@ var pickup_15_color;
 var pickup_25_color;
 var max_time;
 var num_of_pickups=$("#settings_pickups").val();
-var food_5_remaining; //value is initialized in initFoodAmount()
-var food_15_remaining; //value is initialized in initFoodAmount()
-var food_25_remaining; //value is initialized in initFoodAmount()
 var num_of_enemies;
 var num_of_lives;
 
@@ -301,27 +298,45 @@ function UpdatePosition() {
 }
 
 //calculates amount of each food type
+var foodsList = []
 function initFoodAmount() {
-	food_5_remaining = Math.round(num_of_pickups * 0.6)
-	food_15_remaining = Math.round(num_of_pickups * 0.3)
-	food_25_remaining = Math.round(num_of_pickups * 0.1)
-	//let diff = num_of_pickups - (food_5_remaining+ food_15_remaining + food_25_remaining)
-	//food_5_remaining = food_5_remaining + diff
+	let food_5_amount = Math.round(num_of_pickups * 0.6)
+	let food_15_amount = Math.round(num_of_pickups * 0.3)
+	let food_25_amount = Math.round(num_of_pickups * 0.1)
+
+	while(food_5_amount > 0){
+		foodsList.push(CELL_FOOD_5)
+		food_5_amount--
+	}
+	while(food_15_amount > 0){
+		foodsList.push(CELL_FOOD_15)
+		food_15_amount--
+	}
+	while(food_25_amount > 0){
+		foodsList.push(CELL_FOOD_25)
+		food_25_amount--
+	}
+
+	foodsList = shuffle(foodsList)
 }
 
 //returns a food type from what is remaining
 function getFoodType() {
-	if(food_5_remaining > 0) {
-		food_5_remaining = food_5_remaining - 1
-		return CELL_FOOD_5
-	}
-	if(food_15_remaining > 0) {
-		food_15_remaining = food_15_remaining - 1
-		return CELL_FOOD_15
-	}
-	if(food_25_remaining > 0) {
-		food_25_remaining = food_25_remaining - 1
-		return CELL_FOOD_25
+	// if(food_5_remaining > 0) {
+	// 	food_5_remaining = food_5_remaining - 1
+	// 	return CELL_FOOD_5
+	// }
+	// if(food_15_remaining > 0) {
+	// 	food_15_remaining = food_15_remaining - 1
+	// 	return CELL_FOOD_15
+	// }
+	// if(food_25_remaining > 0) {
+	// 	food_25_remaining = food_25_remaining - 1
+	// 	return CELL_FOOD_25
+	// }
+
+	if(foodsList.length > 0) {
+		return foodsList.pop()
 	}
 	return CELL_EMPTY
 }
@@ -330,4 +345,12 @@ function isFoodCell(cell_value) {
 	return (cell_value == CELL_FOOD_5 || cell_value == CELL_FOOD_15 || cell_value == CELL_FOOD_25)
 }
 
-
+//taken from 
+//https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
+function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
