@@ -17,20 +17,26 @@ var down_key = 40;
 var left_key = 37;
 var right_key = 39;
 //these values will get their values from the Apply Settings button
-var pickup_15_color;
+var pickup_5_color;
 var pickup_15_color;
 var pickup_25_color;
 var max_time;
 var num_of_pickups=$("#settings_pickups").val();
+var food_5_remaining; //value is initialized in initFoodAmount()
+var food_15_remaining; //value is initialized in initFoodAmount()
+var food_25_remaining; //value is initialized in initFoodAmount()
 var num_of_enemies;
 
-
 //Psuedo Enums
-ENUM_FOOD = 1
-ENUM_PACMAN = 2 
-ENUM_GHOST = 3
-ENUM_WALL = 4
+CELL_EMPTY = 0
+//CELL_FOOD = 1
+CELL_PACMAN = 2 
+CELL_GHOST = 3
+CELL_WALL = 4
 
+CELL_FOOD_5 = 5
+CELL_FOOD_15 = 6
+CELL_FOOD_25 = 7
 
 
 function sound(src) {
@@ -57,7 +63,8 @@ function Start() {
 	score = 0;
 	pac_color = "#ffff00";
 	var cnt = 100;
-	var food_remain =  num_of_pickups;
+	var food_remain = num_of_pickups;
+	initFoodAmount()
 	var pacman_remain = 1;
 	start_time = new Date();
 	for (var i = 0; i < 10; i++) {
@@ -71,27 +78,30 @@ function Start() {
 				(i == 6 && j == 1) ||
 				(i == 6 && j == 2)
 			) {
-				board[i][j] = 4;
+				board[i][j] = CELL_WALL;
 			} else {
 				var randomNum = Math.random();
 				if (randomNum <= (1.0 * food_remain) / cnt) {
 					food_remain--;
-					board[i][j] = 1;
+					board[i][j] = getFoodType();
 				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
 					shape.i = i;
 					shape.j = j;
 					pacman_remain--;
-					board[i][j] = 2;
+					board[i][j] = CELL_PACMAN;
 				} else {
-					board[i][j] = 0;
+					board[i][j] = CELL_EMPTY;
 				}
 				cnt--;
 			}
 		}
 	}
+
+	let num_of_5_points = 0.6 * food_remain
+
 	while (food_remain > 0) {
 		var emptyCell = findRandomEmptyCell(board);
-		board[emptyCell[0]][emptyCell[1]] = 1;
+		board[emptyCell[0]][emptyCell[1]] = getFoodType();
 		food_remain--;
 	}
 	keysDown = {};
@@ -199,12 +209,25 @@ function Draw() {
 					context.fill();
 				}*/
 				
-			} else if (board[i][j] == ENUM_FOOD) {
+			} else if (board[i][j] == CELL_FOOD_5 || board[i][j] == CELL_FOOD_15 || board[i][j] == CELL_FOOD_25) {
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-				context.fillStyle = "black"; //color
+				switch(board[i][j]){
+					case CELL_FOOD_5:
+						context.fillStyle = pickup_5_color; 
+						break;
+					case CELL_FOOD_15:
+						context.fillStyle = pickup_15_color; 
+						break;
+					case CELL_FOOD_25:
+						context.fillStyle = pickup_25_color; 
+						break;
+					default:
+						context.fillStyle = "black"; //color
+						break;
+				}
 				context.fill();
-			} else if (board[i][j] == ENUM_WALL) {
+			} else if (board[i][j] == CELL_WALL) {
 				context.beginPath();
 				context.rect(center.x - 30, center.y - 30, 60, 60);
 				context.fillStyle = "grey"; //color
@@ -255,4 +278,30 @@ function UpdatePosition() {
 	} else {
 		Draw();
 	}
+}
+
+//calculates amount of each food type
+function initFoodAmount() {
+	food_5_remaining = Math.round(num_of_pickups * 0.6)
+	food_15_remaining = Math.round(num_of_pickups * 0.3)
+	food_25_remaining = Math.round(num_of_pickups * 0.1)
+	//let diff = num_of_pickups - (food_5_remaining+ food_15_remaining + food_25_remaining)
+	//food_5_remaining = food_5_remaining + diff
+}
+
+//returns a food type from what is remaining
+function getFoodType() {
+	if(food_5_remaining > 0) {
+		food_5_remaining = food_5_remaining - 1
+		return CELL_FOOD_5
+	}
+	if(food_15_remaining > 0) {
+		food_15_remaining = food_15_remaining - 1
+		return CELL_FOOD_15
+	}
+	if(food_25_remaining > 0) {
+		food_25_remaining = food_25_remaining - 1
+		return CELL_FOOD_25
+	}
+	return CELL_EMPTY
 }
