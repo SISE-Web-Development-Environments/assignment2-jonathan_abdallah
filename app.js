@@ -119,7 +119,7 @@ function Start() {
 function findRandomEmptyCell(board) {
 	var i = Math.floor(Math.random() * 9 + 1);
 	var j = Math.floor(Math.random() * 9 + 1);
-	while (board[i][j] != 0) {
+	while (board[i][j] != CELL_EMPTY) {
 		i = Math.floor(Math.random() * 9 + 1);
 		j = Math.floor(Math.random() * 9 + 1);
 	}
@@ -151,7 +151,7 @@ function Draw() {
 			var center = new Object();
 			center.x = i * 60 + 30;
 			center.y = j * 60 + 30;
-			if (board[i][j] == 2) {
+			if (board[i][j] == CELL_PACMAN) {
 				
 				context.beginPath();
 				context.arc(center.x, center.y, 30, 0, 2 * Math.PI); // half circle
@@ -209,7 +209,7 @@ function Draw() {
 					context.fill();
 				}*/
 				
-			} else if (board[i][j] == CELL_FOOD_5 || board[i][j] == CELL_FOOD_15 || board[i][j] == CELL_FOOD_25) {
+			} else if (isFoodCell(board[i][j])) {
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
 				switch(board[i][j]){
@@ -238,35 +238,35 @@ function Draw() {
 }
 
 function UpdatePosition() {
-	board[shape.i][shape.j] = 0;
+	board[shape.i][shape.j] = CELL_EMPTY;
 	var x = GetKeyPressed();
 	if (x == 1) {
-		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
+		if (shape.j > 0 && board[shape.i][shape.j - 1] != CELL_WALL) {
 			shape.j--;
 		}
 	}
 	if (x == 2) {
-		if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
+		if (shape.j < 9 && board[shape.i][shape.j + 1] != CELL_WALL) {
 			shape.j++;
 		}
 	}
 	if (x == 3) {
-		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
+		if (shape.i > 0 && board[shape.i - 1][shape.j] != CELL_WALL) {
 			shape.i--;
 		}
 	}
 	if (x == 4) {
-		if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
+		if (shape.i < 9 && board[shape.i + 1][shape.j] != CELL_WALL) {
 			shape.i++;
 		}
 	}
-	if (board[shape.i][shape.j] == 1) {
+	if (isFoodCell(board[shape.i][shape.j])) {
 		eatingPointsSound.play();
 		readySound.stop();
 				
 		score++;
 	}
-	board[shape.i][shape.j] = 2;
+	board[shape.i][shape.j] = CELL_PACMAN;
 	var currentTime = new Date();
 	time_elapsed = (currentTime - start_time) / 1000;
 	if (score >= 20 && time_elapsed <= 10) {
@@ -304,4 +304,8 @@ function getFoodType() {
 		return CELL_FOOD_25
 	}
 	return CELL_EMPTY
+}
+
+function isFoodCell(cell_value) {
+	return (cell_value == CELL_FOOD_5 || cell_value == CELL_FOOD_15 || cell_value == CELL_FOOD_25)
 }
