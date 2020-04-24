@@ -35,8 +35,8 @@ CELL_GHOST = 3
 CELL_WALL = 4
 
 CELL_FOOD_5 = 5
-CELL_FOOD_15 = 6
-CELL_FOOD_25 = 7
+CELL_FOOD_15 = 15
+CELL_FOOD_25 = 25
 
 
 function sound(src) {
@@ -57,7 +57,7 @@ function sound(src) {
 function Start() {
 	eatingPointsSound = new sound("eating.mp3");
 	readySound = new sound("ready.mp3");
-	readySound.play();
+	//readySound.play();
 
 	board = new Array();
 	score = 0;
@@ -263,8 +263,9 @@ function UpdatePosition() {
 	if (isFoodCell(board[shape.i][shape.j])) {
 		eatingPointsSound.play();
 		readySound.stop();
-				
-		score++;
+		
+		//score++;
+		score = score + board[shape.i][shape.j]
 	}
 	board[shape.i][shape.j] = CELL_PACMAN;
 	var currentTime = new Date();
