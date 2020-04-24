@@ -255,7 +255,7 @@
 				var min=$("#settings_pickups").attr("min") , max=$("#settings_pickups").attr("max");  
 				let random1 = parseInt(Math.random() * (+max - +min) + +min);
 				$("#settings_pickups").val(random1);
-				
+
 				// getting a random color
 				var letters = '0123456789ABCDEF';
 				let color5 = '#',color15 = '#',color25 = '#';
@@ -433,7 +433,34 @@
 					<label id="lblUser">USER:</label>
 					<label id="lblUserValue"></label>
 				</div>
+				<div id="lives">
+					<label id="lblLives">NUMBER OF LIVES:</label>
+					<label id="lblLivesValue" for="lblLivesValue">5</label>
+				</div>
 				<canvas id="canvas" height="600" width="600"></canvas>
+			</div>
+
+			<!-- GAME OVER MODAL -->
+			<div id="gameover_modal" class="modal fade" role="dialog">
+				<div class="modal-dialog">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Game Over</h4>
+					</div>
+					<div class="modal-body">
+						<p id="gameover_text">
+
+						</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-default">Play Again</button>
+					</div>
+					</div>
+				</div>
 			</div>
 		</section>
 

@@ -1,3 +1,7 @@
+//might help with ghosts:
+//https://www.masswerk.at/JavaPac/pacman-howto.html#sect3_5
+
+
 var context;
 var shape = new Object();
 var board;
@@ -16,16 +20,17 @@ var up_key = 38;
 var down_key = 40;
 var left_key = 37;
 var right_key = 39;
+
 //these values will get their values from the Apply Settings button
 var pickup_5_color;
 var pickup_15_color;
 var pickup_25_color;
 var max_time;
-var num_of_pickups=$("#settings_pickups").val();
+var num_of_pickups;
 var num_of_enemies;
 var num_of_lives;
 
-//Psuedo Enums
+//Pseudo Enums
 CELL_EMPTY = 0
 //CELL_FOOD = 1
 CELL_PACMAN = 2 
@@ -146,6 +151,7 @@ function Draw() {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
+	lblLivesValue.value = num_of_lives
 	var x = GetKeyPressed();
 	for (var i = 0; i < 10; i++) {
 		for (var j = 0; j < 10; j++) {
