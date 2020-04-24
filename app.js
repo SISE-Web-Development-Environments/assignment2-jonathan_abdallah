@@ -22,10 +22,8 @@ var pickup_15_color;
 var pickup_25_color;
 var max_time;
 var num_of_pickups=$("#settings_pickups").val();
-var food_5_remaining; //value is initialized in initFoodAmount()
-var food_15_remaining; //value is initialized in initFoodAmount()
-var food_25_remaining; //value is initialized in initFoodAmount()
 var num_of_enemies;
+var num_of_lives;
 
 //Psuedo Enums
 CELL_EMPTY = 0
@@ -35,8 +33,8 @@ CELL_GHOST = 3
 CELL_WALL = 4
 
 CELL_FOOD_5 = 5
-CELL_FOOD_15 = 6
-CELL_FOOD_25 = 7
+CELL_FOOD_15 = 15
+CELL_FOOD_25 = 25
 
 
 function sound(src) {
@@ -54,12 +52,15 @@ function sound(src) {
     }    
 }
 
+var gameIsOver = false
 function Start() {
+	gameIsRunning = false
 	eatingPointsSound = new sound("eating.mp3");
 	readySound = new sound("ready.mp3");
 	readySound.play();
 
 	board = new Array();
+	num_of_lives = 5;
 	score = 0;
 	pac_color = "#ffff00";
 	var cnt = 100;
@@ -263,8 +264,9 @@ function UpdatePosition() {
 	if (isFoodCell(board[shape.i][shape.j])) {
 		eatingPointsSound.play();
 		readySound.stop();
-				
-		score++;
+		
+		//score++;
+		score = score + board[shape.i][shape.j]
 	}
 	board[shape.i][shape.j] = CELL_PACMAN;
 	var currentTime = new Date();
@@ -272,40 +274,83 @@ function UpdatePosition() {
 	if (score >= 20 && time_elapsed <= 10) {
 		pac_color = "green";
 	}
-	if (score == 50) {
-		window.clearInterval(interval);
-		window.alert("Game completed");
-	} else {
+	
+	if(!gameIsOver) {
+		if (num_of_lives == 0) { //lose
+			window.clearInterval(interval);
+			window.alert("Loser!");
+			gameIsOver = true
+		} 
+		else if(time_elapsed >= max_time && score < 100) { //half win
+			window.clearInterval(interval);
+			window.alert("You are better than " + score.toString() + " points!");
+			gameIsOver = true
+		}
+		else if(time_elapsed >= max_time && score >= 100) { //win
+			window.clearInterval(interval);
+			window.alert("Winner!!!");
+			gameIsOver = true
+		}
+	}
+	if(!gameIsOver) {
 		Draw();
 	}
 }
 
 //calculates amount of each food type
+var foodsList = []
 function initFoodAmount() {
-	food_5_remaining = Math.round(num_of_pickups * 0.6)
-	food_15_remaining = Math.round(num_of_pickups * 0.3)
-	food_25_remaining = Math.round(num_of_pickups * 0.1)
-	//let diff = num_of_pickups - (food_5_remaining+ food_15_remaining + food_25_remaining)
-	//food_5_remaining = food_5_remaining + diff
+	let food_5_amount = Math.round(num_of_pickups * 0.6)
+	let food_15_amount = Math.round(num_of_pickups * 0.3)
+	let food_25_amount = Math.round(num_of_pickups * 0.1)
+
+	while(food_5_amount > 0){
+		foodsList.push(CELL_FOOD_5)
+		food_5_amount--
+	}
+	while(food_15_amount > 0){
+		foodsList.push(CELL_FOOD_15)
+		food_15_amount--
+	}
+	while(food_25_amount > 0){
+		foodsList.push(CELL_FOOD_25)
+		food_25_amount--
+	}
+
+	foodsList = shuffle(foodsList)
 }
 
 //returns a food type from what is remaining
 function getFoodType() {
-	if(food_5_remaining > 0) {
-		food_5_remaining = food_5_remaining - 1
-		return CELL_FOOD_5
-	}
-	if(food_15_remaining > 0) {
-		food_15_remaining = food_15_remaining - 1
-		return CELL_FOOD_15
-	}
-	if(food_25_remaining > 0) {
-		food_25_remaining = food_25_remaining - 1
-		return CELL_FOOD_25
+	// if(food_5_remaining > 0) {
+	// 	food_5_remaining = food_5_remaining - 1
+	// 	return CELL_FOOD_5
+	// }
+	// if(food_15_remaining > 0) {
+	// 	food_15_remaining = food_15_remaining - 1
+	// 	return CELL_FOOD_15
+	// }
+	// if(food_25_remaining > 0) {
+	// 	food_25_remaining = food_25_remaining - 1
+	// 	return CELL_FOOD_25
+	// }
+
+	if(foodsList.length > 0) {
+		return foodsList.pop()
 	}
 	return CELL_EMPTY
 }
 
 function isFoodCell(cell_value) {
 	return (cell_value == CELL_FOOD_5 || cell_value == CELL_FOOD_15 || cell_value == CELL_FOOD_25)
+}
+
+//taken from 
+//https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
+function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
 }
