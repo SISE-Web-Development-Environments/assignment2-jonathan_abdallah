@@ -57,7 +57,7 @@ function Start() {
 	gameIsRunning = false
 	eatingPointsSound = new sound("eating.mp3");
 	readySound = new sound("ready.mp3");
-	//readySound.play();
+	readySound.play();
 
 	board = new Array();
 	num_of_lives = 5;
