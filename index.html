@@ -23,6 +23,7 @@
 			let pages = {}				//dictionary for all the pages		
 			let users = []				// { username: string, password: string }
 			let keys = []
+			let loggedUser
 			
 			//init
 			$(document).ready(function(){
@@ -46,13 +47,6 @@
 						if(code == 27) /*ESC key pressed*/ {
 							$('#about_modal').modal('hide')
 						}
-						// keys.forEach(k => {
-						// 	if(k.listenToKeyPress) {
-						// 		k.value = code
-						// 		k.display.val(name)
-						// 		k.listenToKeyPress = false
-						// 	}
-						// })
 					}
 				);
 
@@ -162,6 +156,8 @@
 					})
 				if(user) {
 					if(user.password === password) {
+						loggedUser = user.username
+						$("#lblUserValue").text(loggedUser)
 						displayPage('settings')
 					}
 					else {
@@ -205,24 +201,18 @@
 					window.alert("All control buttons must be defined")
 					return false
 				}
-				else if($("#settings_time").val() < 60 ) {
+				else if($("#settings_time").val() < $("#settings_time").attr("min") ) {
 					window.alert("Max time must be more than 60 seconds")
 					return false
 				}
-				else if($("#settings_pickups").val() < 50 || $("#settings_pickups").val() > 90) {
+				else if($("#settings_pickups").val() < $("#settings_pickups").attr("min") || $("#settings_pickups").val() > $("#settings_pickups").attr('max')) {
 					window.alert("Number of pickups not in valid range")
 					return false
 				}
-				else if($("#settings_enemies").val() < 1 || $("#settings_enemies").val() > 4) {
+				else if($("#settings_enemies").val() < $("#settings_enemies").attr("min") || $("#settings_enemies").val() > $("#settings_enemies").attr("max")) {
 					window.alert("Number of enemies not in valid range")
 					return false
 				}
-				// else if( ($("#up_value").text().length > 1 && $("#up_value").text() != "UpArrow") || ($("#down_value").text().length > 1 && $("#down_value").text() != "DownArrow") ||
-				//  ($("#leftinput").text().length > 1 && $("#leftinput").text() != "LeftArrow") || 
-				//  ($("#rightinput").text().length > 1 && $("#rightinput").text() != "RightArrow")) {
-				// 			window.alert("inValid keys length")
-				// 	return false
-				// }
 				return true
 			}
 
@@ -262,13 +252,9 @@
 			function randomizeSettings() {
 				// ************************************************************************* 
 				//$("#settings_lable").append("<br><br>you got the arrows buttons as default")
-				var min=50 ,max=90;  
+				var min=$("#settings_pickups").attr("min") , max=$("#settings_pickups").attr("max");  
 				let random1 = parseInt(Math.random() * (+max - +min) + +min);
-				$(document).ready(function(){
-					$("#settings_random").click(function(){
-						$("#settings_pickups").val(random1);
-					});
-				});
+				$("#settings_pickups").val(random1);
 
 				// getting a random color
 				var letters = '0123456789ABCDEF';
@@ -287,31 +273,20 @@
 				$("#settings_enemies").val(random2);
 				
 				keys[0].value = 38
-				keys[0].display.text("UpArrow")
+				keys[0].display.text("ArrowUp")
 				keys[0].listenToKeyPress = false
 				keys[1].value = 40
-				keys[1].display.text("DownArrow")
+				keys[1].display.text("ArrowDown")
 				keys[1].listenToKeyPress = false
 				keys[2].value = 37
-				keys[2].display.text("LeftArrow")
+				keys[2].display.text("ArrowLeft")
 				keys[2].listenToKeyPress = false
 				keys[3].value = 39
-				keys[3].display.text("RightArrow")
+				keys[3].display.text("ArrowRight")
 				keys[3].listenToKeyPress = false
 			}
 
 		</script>
-
-				<!--  <script>
-				var min=50 ,max=90;  
-							var random = Math.random() * (+max - +min) + +min;
-				$(document).ready(function(){
-				
-				$("#settings_random").click(function(){
-					$("#settings_pickups").val(random);
-				});
-				});
-				</script> -->
 
 	<body>
 
@@ -348,7 +323,6 @@
 
 			<!-- REGISTER PAGE -->
 			<div id="register_page" style="display: none;">
-				TODO:
 				<form>
 					<label for="fname">Full Name:</label><br>
 					<input type="text" id="fname" name="fname"><br>
@@ -435,7 +409,7 @@
 					<input id="settings_enemies" type="number" min=1 max=4 value=1 required="required"><br><br>
 
 					<label>Max Time in seconds (minimum of 60s):</label>
-					<input id="settings_time" type="number" min=60 value=60 required="required"><br><br>
+					<input id="settings_time" type="number" min=10 value=60 required="required"><br><br>
 
 					<button id="settings_random" type="button" onclick="randomizeSettings()" > Randomize settings </button><br>
 					<button id="settings_apply" type="button" onclick=""> Apply & Play! </button><br><br>
@@ -455,7 +429,38 @@
 					<label for="lblTime">TIME:</label>
 					<input id="lblTime" type="text" />
 				</div>
+				<div id="user">
+					<label id="lblUser">USER:</label>
+					<label id="lblUserValue"></label>
+				</div>
+				<div id="lives">
+					<label id="lblLives">NUMBER OF LIVES:</label>
+					<label id="lblLivesValue" for="lblLivesValue">5</label>
+				</div>
 				<canvas id="canvas" height="600" width="600"></canvas>
+			</div>
+
+			<!-- GAME OVER MODAL -->
+			<div id="gameover_modal" class="modal fade" role="dialog">
+				<div class="modal-dialog">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Game Over</h4>
+					</div>
+					<div class="modal-body">
+						<p id="gameover_text">
+
+						</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-default">Play Again</button>
+					</div>
+					</div>
+				</div>
 			</div>
 		</section>
 
