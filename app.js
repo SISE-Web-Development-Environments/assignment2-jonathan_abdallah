@@ -75,8 +75,8 @@ var gameIsOver = false
 
 function Start() {
 	gameIsRunning = false
-	eatingPointsSound = new sound("eating.mp3");
-	readySound = new sound("ready.mp3");
+	eatingPointsSound = new sound("sounds\\eating.mp3");
+	readySound = new sound("sounds\\ready.mp3");
 	readySound.play();
 
 	board = new Array();
@@ -600,19 +600,6 @@ function initFoodAmount() {
 
 //returns a food type from what is remaining
 function getFoodType() {
-	// if(food_5_remaining > 0) {
-	// 	food_5_remaining = food_5_remaining - 1
-	// 	return CELL_FOOD_5
-	// }
-	// if(food_15_remaining > 0) {
-	// 	food_15_remaining = food_15_remaining - 1
-	// 	return CELL_FOOD_15
-	// }
-	// if(food_25_remaining > 0) {
-	// 	food_25_remaining = food_25_remaining - 1
-	// 	return CELL_FOOD_25
-	// }
-
 	if(foodsList.length > 0) {
 		return foodsList.pop()
 	}
