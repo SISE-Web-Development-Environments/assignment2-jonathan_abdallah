@@ -13,7 +13,6 @@
 
 		<!-- Latest compiled JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
 	</head>
 
 
@@ -288,235 +287,208 @@
 
 		</script>
 
-	<body>
-
-				
-		<header>
-			<h1>Game Logo</h1>
-		</header>
 
 
-		<nav class="navbar navbar-default">
-			<div id="nav_list">
-				<br><br><br>
-				<button id="nav_welcome_button" type="button" class="btn btn-default">Welcome</button>
-				<br><br><br>
-				<button id="nav_login_button" type="button" class="btn btn-default">Login</button>
-				<br><br><br>
-				<button id="nav_register_button" type="button" class="btn btn-default">Register</button>
-				<br><br><br>
-				<!-- <button id="nav_settings_button" type="button" >Settings</button>
-				<br><br><br> -->
+	<!-- https://getbootstrap.com/docs/4.0/examples/cover/# -->
+	<body class="text-center">
 
-				<!-- Trigger the modal with a button -->
-				<button id="nav_about_button" type="button" data-toggle="modal" data-target="#about_modal" class="btn btn-default">About</button>
-			</div>
-		</nav>
-
-		<section>
-			<!-- WELCOME PAGE -->
-			<div id="welcome_page">
-				Welcome to Pacman!
-				<button id="login_button" type="button" >Login</button>
-				<button id="register_button" type="button" >Register</button>
-			</div>
-
-			<!-- <div id="welcome_page" class="text-center">
-
-				<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-				  <header class="masthead mb-auto">
-					<div class="inner">
-					  <h3 class="masthead-brand">Cover</h3>
-					  <nav class="nav nav-masthead justify-content-center">
-						<a class="nav-link active" href="#">Home</a>
-						<a class="nav-link" href="#">Features</a>
-						<a class="nav-link" href="#">Contact</a>
-					  </nav>
-					</div>
-				  </header>
-			
-				  <main role="main" class="inner cover">
-					<h1 class="cover-heading">Cover your page.</h1>
-					<p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
-					<p class="lead">
-					  <a href="#" class="btn btn-lg btn-secondary">Learn more</a>
-					</p>
-				  </main>
-			
-				  <footer class="mastfoot mt-auto">
-					<div class="inner">
-					  <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-					</div>
-				  </footer>
+			<header class="masthead mb-auto">	
+				<div class="navbar navbar-default">
+					<h1>Hello, world!</h1>
 				</div>
-			
-			
-
-			</div> -->
-
-
-			<!-- REGISTER PAGE -->
-			<div id="register_page" style="display: none;">
-				<form class="form-signin">
-					<label for="fname">Full Name:</label><br>
-					<input type="text" id="fname" name="fname" class="form-control" placeholder="Full Name" required ><br>
-					
-					<label for="username">User Name:</label><br>
-					<input type="text" id="username" name="uname" class="form-control" placeholder="User Name" required ><br>
-
-					<label for="password">Password:</label><br>
-					<input type="password" id="password" name="pass" class="form-control" placeholder="Password" required ><br>
-
-					<label for="email">E-mail:</label><br>
-					<input type="text" id="email" name="mail" class="form-control" placeholder="E-Mail" required ><br>
-
-					<label for="date of birth">Date of Birth:</label><br>
-					<!-- <input type="date" id="date" name="trip-start"
-							value="1990-01-01"
-							min="1900-01-01" max="2020-12-12"> -->
-
-					<input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input" required>
-					<br>
-					<button id="register_submit" type="button" class="btn btn-lg btn-primary btn-block">Submit</button>
-				</form>
-			</div>
-
-			<!-- LOGIN PAGE -->
-			<div id="login_page" style="display: none;">
-				<!-- https://getbootstrap.com/docs/4.0/examples/sign-in/ -->
-				<form class="form-signin">
-					<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-					<label for="inputEmail" class="sr-only">User Name</label>
-					<input type="username" id="login_username" class="form-control" placeholder="User Name" required autofocus>
-					<label for="inputPassword" class="sr-only">Password</label>
-					<input type="password" id="login_password" class="form-control" placeholder="Password" required>
-					<button id="play_button" type="button" class="btn btn-lg btn-primary btn-block">Login & Play!</button>
-				  </form>
-
-				<!-- <label for="username">User Name:</label><br>
-				<input type="text" id="login_username" name="uname" value="p"><br>
-
-				<label for="password">Password:</label><br>
-				<input type="password" id="login_password" name="pass" value="p"><br>
-				<button id="play_button" type="button" >Login & Play!</button> -->
-			</div>
-
-			<!-- ABOUT MODAL -->
-			<div id="about_modal" class="modal fade" role="dialog">
-				<div class="modal-dialog">
-
-					<!-- Modal content-->
-					<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">About</h4>
+				<nav class="navbar navbar-default">
+					<div id="nav_list">
+						<br><br><br>
+						<button id="nav_welcome_button" type="button" class="btn btn-default">Welcome</button>
+						<br><br><br>
+						<button id="nav_login_button" type="button" class="btn btn-default">Login</button>
+						<br><br><br>
+						<button id="nav_register_button" type="button" class="btn btn-default">Register</button>
+						<br><br><br>
+						<button id="nav_about_button" type="button" data-toggle="modal" data-target="#about_modal" class="btn btn-default">About</button>
 					</div>
-					<div class="modal-body">
-						<p>
-							Students:
-						</p>
-						<ul>
-							<li>Jonathan Wolf</li>
-							<li>Abdalla Asaad</li>
-						</ul>
+				</nav>
+			</header>
 
-						<p>
-							Templates used:
-						</p>
-						<ul>
-							<li><a href="https://www.w3schools.com/bootstrap/bootstrap_modal.asp">https://www.w3schools.com/bootstrap/bootstrap_modal.asp</a></li>
-						</ul>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- SETTINGS PAGE -->
-			<div id="settings_page" style="display: none;">
-				<form onsubmit="applySettings()">
-					<label id="settings_lable">Controls:</label><br>enter the controls you need<br>
-					<li><button id="settings_up" type="button" required="required" onclick="recordMovementKey(0)">Up</button>        &emsp;<kbd id="up_value">ArrowUp</kbd><br></li>
-					<li><button id="settings_down" type="button" required="required" onclick="recordMovementKey(1)">Down</button>    &emsp;<kbd id="down_value">ArrowDown</kbd><br></li>
-					<li><button id="settings_left" type="button" required="required" onclick="recordMovementKey(2)">Left</button>    &emsp;<kbd id="left_value">ArrowLeft</kbd><br></li>
-					<li><button id="settings_right" type="button" required="required" onclick="recordMovementKey(3)">Right</button>  &emsp;<kbd id="right_value">ArrowRight</kbd><br></li><br>
-
-					<label>Number of pickups (between 50 and 90):</label>
-					<input id="settings_pickups" type="number" min=50 max=90 value=50><br><br>	
-
-					<label>Colors:</label>
-					<li>5 point pickup: <input id="settings_5_point_color" type="color" required="required"><br></li>
-					<li>15 point pickup: <input id="settings_15_point_color" type="color" required="required"><br></li>
-					<li>25 point pickup: <input id="settings_25_point_color" type="color" required="required"><br></li><br>
-					
-					<label>Number of enemies:</label>
-					<input id="settings_enemies" type="number" min=1 max=4 value=1 required="required"><br><br>
-
-					<label>Max Time in seconds (minimum of 60s):</label>
-					<input id="settings_time" type="number" min=10 value=60 required="required"><br><br>
-
-					<button id="settings_random" type="button" onclick="randomizeSettings()" > Randomize settings </button><br>
-					<button id="settings_apply" type="button" onclick=""> Apply & Play! </button><br><br>
-					<!-- <button id="settings_apply" type="submit"> Apply </button><br><br>  
-						This doesnt work properly because it refreshes the page
-						We need to manually do the validation without the submit option-->
-				</form>
-			</div>
-
-			<!-- GAME PAGE -->
-			<div id="game" style="display: none;">
-				<div id="score">
-					<label for="lblScore">SCORE:</label>
-					<input id="lblScore" type="text" />
-				</div>
-				<div id="time">
-					<label for="lblTime">TIME:</label>
-					<input id="lblTime" type="text" />
-				</div>
-				<div id="user">
-					<label id="lblUser">USER:</label>
-					<label id="lblUserValue"></label>
-				</div>
-				<div id="lives">
-					<label id="lblLives">NUMBER OF LIVES:</label>
-					<label id="lblLivesValue" for="lblLivesValue">5</label>
-				</div>
-				<canvas id="canvas" height="600" width="600"></canvas>
-			</div>
-
-			<!-- GAME OVER MODAL -->
-			<div id="gameover_modal" class="modal fade" role="dialog">
-				<div class="modal-dialog">
-
-					<!-- Modal content-->
-					<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Game Over</h4>
-					</div>
-					<div class="modal-body">
-						<p id="gameover_text">
-
+			<section class="container">
+				<div class="py-5 text-center">
+				<!-- WELCOME PAGE -->
+					<div id="welcome_page">
+						<h1 class="cover-heading">Welcome to Pacman!</h1>
+						<button id="login_button" type="button" class="btn btn-lg btn-primary ">Login</button>
+						<button id="register_button" type="button" class="btn btn-lg btn-primary ">Register</button><br><br>
 						</p>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-default">Play Again</button>
+
+					<!-- REGISTER PAGE -->
+					<div id="register_page" style="display: none;">
+						<form class="form-signin">
+							<label for="fname">Full Name:</label><br>
+							<input type="text" id="fname" name="fname" class="form-control" placeholder="Full Name" required ><br>
+							
+							<label for="username">User Name:</label><br>
+							<input type="text" id="username" name="uname" class="form-control" placeholder="User Name" required ><br>
+
+							<label for="password">Password:</label><br>
+							<input type="password" id="password" name="pass" class="form-control" placeholder="Password" required ><br>
+
+							<label for="email">E-mail:</label><br>
+							<input type="text" id="email" name="mail" class="form-control" placeholder="E-Mail" required ><br>
+
+							<label for="date of birth">Date of Birth:</label><br>
+							<!-- <input type="date" id="date" name="trip-start"
+									value="1990-01-01"
+									min="1900-01-01" max="2020-12-12"> -->
+
+							<input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input" required>
+							<br>
+							<button id="register_submit" type="button" class="btn btn-lg btn-primary btn-block">Submit</button>
+						</form>
 					</div>
+
+					<!-- LOGIN PAGE -->
+					<div id="login_page" style="display: none;">
+						<!-- https://getbootstrap.com/docs/4.0/examples/sign-in/ -->
+						<form class="form-signin">
+							<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+							<label for="inputEmail" class="sr-only">User Name</label>
+							<input type="username" id="login_username" class="form-control" placeholder="User Name" required autofocus>
+							<label for="inputPassword" class="sr-only">Password</label>
+							<input type="password" id="login_password" class="form-control" placeholder="Password" required>
+							<button id="play_button" type="button" class="btn btn-lg btn-primary btn-block">Login & Play!</button>
+						</form>
+
+						<!-- <label for="username">User Name:</label><br>
+						<input type="text" id="login_username" name="uname" value="p"><br>
+
+						<label for="password">Password:</label><br>
+						<input type="password" id="login_password" name="pass" value="p"><br>
+						<button id="play_button" type="button" >Login & Play!</button> -->
+					</div>
+
+					<!-- ABOUT MODAL -->
+					<div id="about_modal" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">About</h4>
+							</div>
+							<div class="modal-body">
+								<p>
+									Students:
+								</p>
+								<ul>
+									<li>Jonathan Wolf</li>
+									<li>Abdalla Asaad</li>
+								</ul>
+
+								<p>
+									Templates used:
+								</p>
+								<ul>
+									<li><a href="https://www.w3schools.com/bootstrap/bootstrap_modal.asp">https://www.w3schools.com/bootstrap/bootstrap_modal.asp</a></li>
+								</ul>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- SETTINGS PAGE -->
+					<div id="settings_page" style="display: none;">
+						<form onsubmit="applySettings()">
+							<label id="settings_lable">Controls:</label><br>enter the controls you need<br>
+							<li><button id="settings_up" type="button" required="required" onclick="recordMovementKey(0)">Up</button>        &emsp;<kbd id="up_value">ArrowUp</kbd><br></li>
+							<li><button id="settings_down" type="button" required="required" onclick="recordMovementKey(1)">Down</button>    &emsp;<kbd id="down_value">ArrowDown</kbd><br></li>
+							<li><button id="settings_left" type="button" required="required" onclick="recordMovementKey(2)">Left</button>    &emsp;<kbd id="left_value">ArrowLeft</kbd><br></li>
+							<li><button id="settings_right" type="button" required="required" onclick="recordMovementKey(3)">Right</button>  &emsp;<kbd id="right_value">ArrowRight</kbd><br></li><br>
+
+							<label>Number of pickups (between 50 and 90):</label>
+							<input id="settings_pickups" type="number" min=50 max=90 value=50><br><br>	
+
+							<label>Colors:</label>
+							<li>5 point pickup: <input id="settings_5_point_color" type="color" required="required"><br></li>
+							<li>15 point pickup: <input id="settings_15_point_color" type="color" required="required"><br></li>
+							<li>25 point pickup: <input id="settings_25_point_color" type="color" required="required"><br></li><br>
+							
+							<label>Number of enemies:</label>
+							<input id="settings_enemies" type="number" min=1 max=4 value=1 required="required"><br><br>
+
+							<label>Max Time in seconds (minimum of 60s):</label>
+							<input id="settings_time" type="number" min=10 value=60 required="required"><br><br>
+
+							<button id="settings_random" type="button" onclick="randomizeSettings()" > Randomize settings </button><br>
+							<button id="settings_apply" type="button" onclick=""> Apply & Play! </button><br><br>
+							<!-- <button id="settings_apply" type="submit"> Apply </button><br><br>  
+								This doesnt work properly because it refreshes the page
+								We need to manually do the validation without the submit option-->
+						</form>
+					</div>
+
+					<!-- GAME PAGE -->
+					<div id="game" style="display: none;">
+						<div id="score">
+							<label for="lblScore">SCORE:</label>
+							<input id="lblScore" type="text" />
+						</div>
+						<div id="time">
+							<label for="lblTime">TIME:</label>
+							<input id="lblTime" type="text" />
+						</div>
+						<div id="user">
+							<label id="lblUser">USER:</label>
+							<label id="lblUserValue"></label>
+						</div>
+						<div id="lives">
+							<label id="lblLives">NUMBER OF LIVES:</label>
+							<label id="lblLivesValue" for="lblLivesValue">5</label>
+						</div>
+						<canvas id="canvas" height="600" width="600"></canvas>
+					</div>
+
+					<!-- GAME OVER MODAL -->
+					<div id="gameover_modal" class="modal fade" role="dialog">
+					<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Game Over</h4>
+						</div>
+						<div class="modal-body">
+							<p id="gameover_text">
+
+							</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-default">Play Again</button>
+						</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</section>
 
-		<footer>
-			<p>This website was made as part of a course assignment</p>
-		</footer>
+			</section>
+
+			<!-- <footer>
+				<p>This website was made as part of a course assignment</p>
+			</footer> -->
+			<footer class="mastfoot mt-auto">
+				<div class="inner">
+				<p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+				</div>
+			</footer>
 
 
 
-				<!-- Bootstrap core JavaScript
+		<!-- Bootstrap core JavaScript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

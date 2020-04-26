@@ -4,7 +4,7 @@ header{
 	text-align: center;
     padding-top: 10px;
     top: 0px;
-    border: 1px groove #aaaaaa;
+    /* border: 1px groove #aaaaaa; */
     /* background-color:green;
 	text-shadow:5px 5px 5px white; */
 }
@@ -12,24 +12,25 @@ nav{
 	float: left;
 	width:150px;
     height:800px;
-    border: 1px groove #aaaaaa;
+    /* border: 1px groove #aaaaaa; */
     /* background-color:red; */
 }
 
-#nav_list{
+/* #nav_list{
     margin-left: 30px;
-}
+} */
 section{
 	float: left;
 	/* width:650px; */
     /* height:500px; */
-    border: 1px groove #aaaaaa;
+    /* border: 1px groove #aaaaaa; */
     /* background-color:blue; */
 }
 
+
 footer{
     clear: both;
-    border: 1px groove #aaaaaa;
+    /* border: 1px groove #aaaaaa; */
     /* background: blue; */
     /* color: White; */
     /* padding: 0; */
