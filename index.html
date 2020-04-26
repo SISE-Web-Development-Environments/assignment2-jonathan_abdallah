@@ -403,11 +403,12 @@
 					<!-- SETTINGS PAGE -->
 					<div id="settings_page" style="display: none;">
 						<form onsubmit="applySettings()">
-							<label id="settings_lable">Controls:</label><br>enter the controls you need<br>
-							<li><button id="settings_up" type="button" required="required" onclick="recordMovementKey(0)">Up</button>        &emsp;<kbd id="up_value">ArrowUp</kbd><br></li>
-							<li><button id="settings_down" type="button" required="required" onclick="recordMovementKey(1)">Down</button>    &emsp;<kbd id="down_value">ArrowDown</kbd><br></li>
-							<li><button id="settings_left" type="button" required="required" onclick="recordMovementKey(2)">Left</button>    &emsp;<kbd id="left_value">ArrowLeft</kbd><br></li>
-							<li><button id="settings_right" type="button" required="required" onclick="recordMovementKey(3)">Right</button>  &emsp;<kbd id="right_value">ArrowRight</kbd><br></li><br>
+							<h1 class="h3 mb-3 font-weight-normal">Controls:</h1><br>
+							<label>Enter the controls you need</label><br>
+							<li><button id="settings_up" type="button" class="btn btn-sm btn-default" required="required" onclick="recordMovementKey(0)">Up</button>        &emsp;<kbd id="up_value">ArrowUp</kbd><br></li>
+							<li><button id="settings_down" type="button" class="btn btn-sm btn-default" required="required" onclick="recordMovementKey(1)">Down</button>    &emsp;<kbd id="down_value">ArrowDown</kbd><br></li>
+							<li><button id="settings_left" type="button" class="btn btn-sm btn-default" required="required" onclick="recordMovementKey(2)">Left</button>    &emsp;<kbd id="left_value">ArrowLeft</kbd><br></li>
+							<li><button id="settings_right" type="button" class="btn btn-sm btn-default" required="required" onclick="recordMovementKey(3)">Right</button>  &emsp;<kbd id="right_value">ArrowRight</kbd><br></li><br>
 
 							<label>Number of pickups (between 50 and 90):</label>
 							<input id="settings_pickups" type="number" min=50 max=90 value=50><br><br>	
@@ -423,8 +424,8 @@
 							<label>Max Time in seconds (minimum of 60s):</label>
 							<input id="settings_time" type="number" min=10 value=60 required="required"><br><br>
 
-							<button id="settings_random" type="button" onclick="randomizeSettings()" > Randomize settings </button><br>
-							<button id="settings_apply" type="button" onclick=""> Apply & Play! </button><br><br>
+							<button id="settings_random" type="button" class="btn btn-primary" onclick="randomizeSettings()" > Randomize settings </button><br><br>
+							<button id="settings_apply" type="button" class="btn  btn-primary" onclick=""> Apply & Play! </button><br><br>
 							<!-- <button id="settings_apply" type="submit"> Apply </button><br><br>  
 								This doesnt work properly because it refreshes the page
 								We need to manually do the validation without the submit option-->
