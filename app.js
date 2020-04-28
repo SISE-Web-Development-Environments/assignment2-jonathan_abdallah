@@ -72,9 +72,8 @@ function sound(src) {
 }
 
 var gameIsOver = false
-
 function Start() {
-	gameIsRunning = false
+	gameIsOver = false
 	eatingPointsSound = new sound("sounds\\eating.mp3");
 	readySound = new sound("sounds\\ready.mp3");
 	readySound.play();
@@ -555,19 +554,25 @@ function UpdatePosition() {
 	
 	if(!gameIsOver) {
 		if (num_of_lives == 0) { //lose
-			window.clearInterval(interval);
-			window.alert("Loser!");
 			gameIsOver = true
+			window.clearInterval(interval);
+			//window.alert("Loser!");
+			$("#gameover_modal").modal('show')
+			$("#gameover_text").text("Loser!")
 		} 
 		else if(time_elapsed >= max_time && score < 100) { //half win
-			window.clearInterval(interval);
-			window.alert("You are better than " + score.toString() + " points!");
 			gameIsOver = true
+			window.clearInterval(interval);
+			//window.alert("You are better than " + score.toString() + " points!");
+			$("#gameover_modal").modal('show')
+			$("#gameover_text").text("You are better than " + score.toString() + " points!")
 		}
 		else if(time_elapsed >= max_time && score >= 100) { //win
-			window.clearInterval(interval);
-			window.alert("Winner!!!");
 			gameIsOver = true
+			window.clearInterval(interval);
+			//window.alert("Winner!!!");
+			$("#gameover_modal").modal('show')
+			$("#gameover_text").text("Winner!!!")
 		}
 	}
 	if(!gameIsOver) {
