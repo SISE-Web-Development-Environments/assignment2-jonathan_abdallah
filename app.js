@@ -345,7 +345,7 @@ function UpdatePosition() {
 	//lastKey[0]=1;
 	//lastKey[1] = x;
 
-	// ******* Code for the enemies ********
+	// ******* Code for the enemies ******** server *****************************************************
 
 	var enemy1 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
 	var enemy2 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
