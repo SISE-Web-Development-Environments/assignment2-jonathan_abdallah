@@ -24,9 +24,10 @@ var prevP_fourthEnemy=0;
 // sounds
 var eatingPointsSound ;
 var readySound;
+var died;
 
 let enemiesMovementOptions = [1,2,3,4] ;
-let checkNumOfEnemies =0;
+let checkNumOfEnemies =0; //tells us which enemy are we talking about
 
 var up_key = 38;
 var down_key = 40;
@@ -76,7 +77,9 @@ function Start() {
 	gameIsOver = false
 	eatingPointsSound = new sound("sounds\\eating.mp3");
 	readySound = new sound("sounds\\ready.mp3");
+	died = new sound("sounds\\die.mp3");
 	readySound.play();
+	checkNumOfEnemies = 0;
 
 	board = new Array();
 	num_of_lives = 5;
@@ -91,12 +94,8 @@ function Start() {
 		board[i] = new Array();
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
 		for (var j = 0; j < 10; j++) {
-			if (isWallLocation(i,j)
-				// (i == 3 && j == 3) ||
-				// (i == 3 && j == 4) ||
-				// (i == 3 && j == 5) ||
-				// (i == 6 && j == 1) ||
-				// (i == 6 && j == 2)
+			if (isWallLocation(i, j)
+				
 			) {
 				board[i][j] = CELL_WALL;
 			} else {
@@ -105,13 +104,26 @@ function Start() {
 					food_remain--;
 					board[i][j] = getFoodType();
 				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
-					if(i!=0&&j!=0 /*|| i!=0&&j!=9 || i!=9&&j!=0 || i!=9&&j!=9*/ ){
+					if (i != 0 && j != 0 /*|| i!=0&&j!=9 || i!=9&&j!=0 || i!=9&&j!=9*/) {
 						shape.i = i;
 						shape.j = j;
 						pacman_remain--;
 						board[i][j] = CELL_PACMAN;
 					}
-				} else {
+
+				}
+
+				/*else if(num_of_enemies != 0){
+					if( (i==0 && j==0) || (i==0 && j==9) || (i==9 && j==0) || (i==9 && j==9) ){
+						
+						checkNumOfEnemies++;
+						putAnEnemy(i, j);
+
+					}
+				}*/
+					
+
+				else {
 					board[i][j] = CELL_EMPTY;
 				}
 				cnt--;
@@ -119,26 +131,19 @@ function Start() {
 		}
 	}
 
-	while(num_of_enemies!=0){
-		//else if(num_of_enemies !=0 ){
-		var i_ind = Math.random();
-
-		var j_ind=Math.random();
+	while (num_of_enemies != 0) {
 		
-			
-		if(i_ind<=0.5){i_ind=0;}
-		else
-			{i_ind=9;}
-		if(j_ind<=0.5){j_ind=0;}
-		else
-			{j_ind=9;}
+		var i_ind = Math.random();
+		var j_ind = Math.random();
 
-		if(board[i_ind][j_ind] !=3 ){
-			//board[i_ind][j_ind] =3;
-			//num_of_enemies--;
-			checkNumOfEnemies++ ;
-			//checkNumOfEnemies=true;
-			putAnEnemy(i_ind,j_ind);
+		if (i_ind <= 0.5) { i_ind = 0; }
+		else { i_ind = 9; }
+		if (j_ind <= 0.5) { j_ind = 0; }
+		else { j_ind = 9; }
+
+		if (board[i_ind][j_ind] != 3) {
+			checkNumOfEnemies++;
+			putAnEnemy(i_ind, j_ind);
 		}
 	}
 
@@ -148,10 +153,10 @@ function Start() {
 		food_remain--;
 	}
 	keysDown = {};
-	addEventListener("keydown",function(e) {keysDown[e.keyCode] = true;},false);
+	addEventListener("keydown", function (e) { keysDown[e.keyCode] = true; }, false);
 	addEventListener(
 		"keyup",
-		function(e) {
+		function (e) {
 			keysDown[e.keyCode] = false;
 		},
 		false
@@ -217,61 +222,43 @@ function GetKeyPressed() {
 	}
 }
 
-function changeDirectionAndDraw(x,y){
-	
-	var center =new Object();
-	center.x=x*60+30;
-	center.y=y*60+30;
+function changeDirectionAndDraw(x, y) {
+
+	var center = new Object();
+	center.x = x * 60 + 30;
+	center.y = y * 60 + 30;
 	var pressedKey = GetKeyPressed();
 
-	if(pressedKey==1){
-		context.clearRect(center.x-30,center.y-30, 60,60);
-		context.beginPath();
-		context.arc(center.x, center.y, 30, 1.2*Math.PI,1.8*Math.PI,true); // half circle
-		context.lineTo(center.x, center.y);
-		context.fillStyle = pac_color; //color
-		context.fill();
-		context.beginPath();
-		context.arc(center.x + 15, center.y +2, 5, 0, 2 * Math.PI); // circle
-		context.fillStyle = "black"; //color
-		context.fill();
-	}
-	if(pressedKey==2){
-		context.clearRect(center.x-30,center.y-30, 60,60);
-		context.beginPath();
-		context.arc(center.x, center.y, 30, 0.25*Math.PI,0.65*Math.PI,true); // half circle
-		context.lineTo(center.x, center.y);
-		context.fillStyle = pac_color; //color
-		context.fill();
-		context.beginPath();
-		context.arc(center.x + 15, center.y -4, 5, 0, 2 * Math.PI); // circle
-		context.fillStyle = "black"; //color
-		context.fill();
-	}
-	if(pressedKey==3){
-		context.clearRect(center.x-30,center.y-30, 60,60);
-		context.beginPath();
-		context.arc(center.x, center.y, 30, 0.75 * Math.PI, 1.25 * Math.PI,true); // half circle
-		context.lineTo(center.x, center.y);
-		context.fillStyle = pac_color; //color
-		context.fill();
-		context.beginPath();
-		context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
-		context.fillStyle = "black"; //color
-		context.fill();
-	}
-	if(pressedKey==4){
-		context.clearRect(center.x-30,center.y-30, 60,60);
-		context.beginPath();
-		context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
-		context.lineTo(center.x, center.y);
-		context.fillStyle = pac_color; //color
-		context.fill();
-		context.beginPath();
-		context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
-		context.fillStyle = "black"; //color
-		context.fill();
-	}
+	if (pressedKey == 1) 
+		drawDirection(1.2,1.8,15,2,x,y);
+		
+	if (pressedKey == 2) 
+		drawDirection(0.25,0.65,15,-4,x,y);
+		
+	if (pressedKey == 3) 
+		drawDirection(0.75,1.25,5,-15,x,y);
+	
+	if (pressedKey == 4) 
+		drawDirection(1.75,0.25,5,-15,x,y);
+	
+}
+
+function drawDirection(m,n,a,b,x,y){
+
+	var center = new Object();
+	center.x = x * 60 + 30;
+	center.y = y * 60 + 30;
+
+	context.clearRect(center.x - 30, center.y - 30, 60, 60);
+	context.beginPath();
+	context.arc(center.x , center.y, 30,  m* Math.PI, n* Math.PI, true);
+	context.lineTo(center.x, center.y);
+	context.fillStyle = pac_color; //color
+	context.fill();
+	context.beginPath();
+	context.arc(center.x + a, center.y + b, 5, 0, 2 * Math.PI); // circle
+	context.fillStyle = "black"; //color
+	context.fill();
 
 }
 
@@ -337,186 +324,65 @@ function Draw() {
 }
 
 function UpdatePosition() {
+
 	board[shape.i][shape.j] = CELL_EMPTY;
 	var x = GetKeyPressed();
 
-
-	//let lastKey = []
-	//lastKey[0]=1;
-	//lastKey[1] = x;
-
-	// ******* Code for the enemies ******** server *****************************************************
 
 	var enemy1 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
 	var enemy2 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
 	var enemy3 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
 	var enemy4 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
 
-	//for the first enemy
-	
-		if(enemy1==1){
-			if(firstEnemy.j>0 && board[firstEnemy.i][firstEnemy.j-1] != 4 && board[firstEnemy.i][firstEnemy.j-1] != 3){
-				 
-				board[firstEnemy.i][firstEnemy.j]=prevP_firstEnemy;
-				prevP_firstEnemy = board[firstEnemy.i][firstEnemy.j-1];
-				firstEnemy.j--;
-				//board[firstEnemy.i][firstEnemy.j]=3;
-				//board[firstEnemy.i][firstEnemy.j+1]=prevP_firstEnemy;*/
-			}
-				
-		}
-		if(enemy1==2){
-			if(firstEnemy.j<9 && board[firstEnemy.i][firstEnemy.j+1] != 4&& board[firstEnemy.i][firstEnemy.j+1] != 3){
-			
-
-			    board[firstEnemy.i][firstEnemy.j]=prevP_firstEnemy ;
-				prevP_firstEnemy = board[firstEnemy.i][firstEnemy.j+1];
-				firstEnemy.j++;
-				//board[firstEnemy.i][firstEnemy.j]=3;
-				//board[firstEnemy.i][firstEnemy.j-1]=prevP_firstEnemy;
-			}
-		}
-		if(enemy1==3){
-			if(firstEnemy.i>0&&board[firstEnemy.i-1][firstEnemy.j] != 4&&board[firstEnemy.i-1][firstEnemy.j] != 3){
-
-				board[firstEnemy.i][firstEnemy.j]=prevP_firstEnemy ;
-				prevP_firstEnemy=board[firstEnemy.i-1][firstEnemy.j];
-				firstEnemy.i--;
-				//board[firstEnemy.i][firstEnemy.j]=3;
-				//board[firstEnemy.i+1][firstEnemy.j] =prevP_firstEnemy;
-			}		
-		}
-		if(enemy1==4){
-			if(firstEnemy.i<9 && board[firstEnemy.i+1][firstEnemy.j] != 4&& board[firstEnemy.i+1][firstEnemy.j] != 3){
-
-				board[firstEnemy.i][firstEnemy.j]=prevP_firstEnemy ;	
-				prevP_firstEnemy = board[firstEnemy.i+1][firstEnemy.j];
-				firstEnemy.i++;
-				//board[firstEnemy.i][firstEnemy.j]=3;
-				//board[firstEnemy.i-1][firstEnemy.j] = prevP_firstEnemy;
-		}
-		}
-		board[firstEnemy.i][firstEnemy.j]=3;
-		
-   
+	//for the first enemy (there is always first enemy no need to check if it is exist)
+	move(firstEnemy,enemy1,prevP_firstEnemy);
 
 	// for the second enemy
-	if(checkNumOfEnemies>=2){
-		if(enemy2==1){
-			if(secondEnemy.j>0 && board[secondEnemy.i][secondEnemy.j-1] != 4&& board[secondEnemy.i][secondEnemy.j-1] != 3){
+	if (checkNumOfEnemies >= 2) {move(secondEnemy,enemy2,prevP_secondtEnemy);}
 
-			board[secondEnemy.i][secondEnemy.j]=prevP_secondtEnemy;
-			prevP_secondtEnemy = board[secondEnemy.i][secondEnemy.j-1];
-			secondEnemy.j--;
-			//board[secondEnemy.i][secondEnemy.j]=3;
-			}
-		}
-		if(enemy2==2){
-			if(secondEnemy.j<9 && board[secondEnemy.i][secondEnemy.j+1] != 4&& board[secondEnemy.i][secondEnemy.j+1] != 3){
-
-			//prevP_secondtEnemy = board[secondEnemy.i][secondEnemy.j+1];
-			board[secondEnemy.i][secondEnemy.j]=prevP_secondtEnemy;
-			prevP_secondtEnemy = board[secondEnemy.i][secondEnemy.j+1] ;
-
-			secondEnemy.j++;
-			//board[secondEnemy.i][secondEnemy.j]=3;
-			}
-		}
-		if(enemy2==3){
-			if(secondEnemy.i>0&&board[secondEnemy.i-1][secondEnemy.j] != 4&&board[secondEnemy.i-1][secondEnemy.j] != 3){
-
-			board[secondEnemy.i][secondEnemy.j]=prevP_secondtEnemy;
-			prevP_secondtEnemy= board[secondEnemy.i-1][secondEnemy.j];
-			secondEnemy.i--;
-			//board[secondEnemy.i][secondEnemy.j]=3;
-			}
-		}
-		if(enemy2==4){
-			if(secondEnemy.i<9 && board[secondEnemy.i+1][secondEnemy.j] != 4&& board[secondEnemy.i+1][secondEnemy.j] != 3){
-
-			board[secondEnemy.i][secondEnemy.j]=prevP_secondtEnemy;
-			prevP_secondtEnemy = board[secondEnemy.i+1][secondEnemy.j] ;
-			secondEnemy.i++;
-			//board[secondEnemy.i][secondEnemy.j]=3;
-			}
-			
-		}
-		board[secondEnemy.i][secondEnemy.j]=3;
-    }
-
-	  //for the third enemy 
-	if(checkNumOfEnemies>=3){
-		if(enemy3==1){
-			if(thirdEnemy.j>0 && board[thirdEnemy.i][thirdEnemy.j-1] != 4&& board[thirdEnemy.i][thirdEnemy.j-1] != 3){
-			board[thirdEnemy.i][thirdEnemy.j]=prevP_thirdtEnemy;
-			prevP_thirdtEnemy= board[thirdEnemy.i][thirdEnemy.j-1];
-			thirdEnemy.j--;
-			}
-			
-		}
-		if(enemy3==2){
-			if(thirdEnemy.j<9 && board[thirdEnemy.i][thirdEnemy.j+1] != 4 && board[thirdEnemy.i][thirdEnemy.j+1] != 3){
-			board[thirdEnemy.i][thirdEnemy.j]=prevP_thirdtEnemy;
-			prevP_thirdtEnemy = board[thirdEnemy.i][thirdEnemy.j+1];
-			thirdEnemy.j++;
-			}
-		}
-		if(enemy3==3){
-			if(thirdEnemy.i>0&&board[thirdEnemy.i-1][thirdEnemy.j] != 4&&board[thirdEnemy.i-1][thirdEnemy.j] != 3){
-			board[thirdEnemy.i][thirdEnemy.j]=prevP_thirdtEnemy;
-			prevP_thirdtEnemy = board[thirdEnemy.i-1][thirdEnemy.j];
-			thirdEnemy.i--;
-			}
-		}
-		if(enemy3==4){
-			if(thirdEnemy.i<9 && board[thirdEnemy.i+1][thirdEnemy.j] != 4&& board[thirdEnemy.i+1][thirdEnemy.j] != 3){
-			board[thirdEnemy.i][thirdEnemy.j]=prevP_thirdtEnemy;
-			prevP_thirdtEnemy = board[thirdEnemy.i+1][thirdEnemy.j];
-			thirdEnemy.i++;
-			}
-		}
-		board[thirdEnemy.i][thirdEnemy.j]=3;
-    }
+	//for the third enemy 
+	if (checkNumOfEnemies >= 3) {move(thirdEnemy,enemy3,prevP_thirdtEnemy);}
 
 	//for the fourth enemy
-	if(checkNumOfEnemies==4){
-		if(enemy4==1){ 
-			if(fourthEnemy.j>0 && board[fourthEnemy.i][fourthEnemy.j-1] != 4&& board[fourthEnemy.i][fourthEnemy.j-1] != 3){
-			board[fourthEnemy.i][fourthEnemy.j] = prevP_fourthEnemy;
-			prevP_fourthEnemy = board[fourthEnemy.i][fourthEnemy.j-1];
-			fourthEnemy.j--;
+	if (checkNumOfEnemies == 4) {move(fourthEnemy,enemy4,prevP_fourthEnemy);}
+
+	function move(enemy,move,prev){
+
+		if(move==1){
+			if(enemy.j>0 && board[enemy.i][enemy.j-1] !=4 && board[enemy.i][enemy.j] != 3){
+				board[enemy.i][enemy.j] = prev;
+				prev = board[enemy.i][enemy.j -1];
+				enemy.j--;
 			}
 		}
-		if(enemy4==2){
-			if(fourthEnemy.j<9 && board[fourthEnemy.i][fourthEnemy.j+1] != 4&& board[fourthEnemy.i][fourthEnemy.j+1] != 3){
-			board[fourthEnemy.i][fourthEnemy.j] = prevP_fourthEnemy;
-			prevP_fourthEnemy = board[fourthEnemy.i][fourthEnemy.j+1];
-			fourthEnemy.j++;
+		if(move==2){
+			if(enemy.j<9 && board[enemy.i][enemy.j+1] != 4 && board[enemy.i][enemy.j+1] != 3){
+				board[enemy.i][enemy.j] = prev;
+				prev = board[enemy.i][enemy.j + 1];
+				enemy.j++;
 			}
 		}
-		if(enemy4==3){
-			if(fourthEnemy.i>0&&board[fourthEnemy.i-1][fourthEnemy.j] != 4&&board[fourthEnemy.i-1][fourthEnemy.j] != 3){
-			board[fourthEnemy.i][fourthEnemy.j] = prevP_fourthEnemy;
-			prevP_fourthEnemy = board[fourthEnemy.i-1][fourthEnemy.j];
-			fourthEnemy.i--;
+		if(move==3){
+			if (enemy.i > 0 && board[enemy.i - 1][enemy.j] != 4 && board[enemy.i - 1][enemy.j] != 3) {
+
+				board[enemy.i][enemy.j] = prev;
+				prev = board[enemy.i - 1][enemy.j];
+				enemy.i--;
 			}
 		}
-		if(enemy4==4){
-			if(fourthEnemy.i<9 && board[fourthEnemy.i+1][fourthEnemy.j] != 4&& board[fourthEnemy.i+1][fourthEnemy.j] != 3){
-			board[fourthEnemy.i][fourthEnemy.j] = prevP_fourthEnemy;
-			prevP_fourthEnemy = board[fourthEnemy.i+1][fourthEnemy.j];
-			fourthEnemy.i++;
+		if (move == 4) {
+			if (enemy.i < 9 && board[enemy.i + 1][enemy.j] != 4 && board[enemy.i + 1][enemy.j] != 3) {
+	
+				board[enemy.i][enemy.j] = prev;
+				prev = board[enemy.i + 1][enemy.j];
+				enemy.i++;
 			}
-			
 		}
-		board[fourthEnemy.i][fourthEnemy.j]=3;
+		board[enemy.i][enemy.j]=3;
+
 	}
 
-	// end Code of the enemies
-
-	
-	//var upd =true;
-	//while(lastKey.length!=0){
+	//pacman position update
 
 	if (x == 1) {
 		if (shape.j > 0 && board[shape.i][shape.j - 1] != CELL_WALL) {
@@ -545,6 +411,25 @@ function UpdatePosition() {
 		//score++;
 		score = score + board[shape.i][shape.j]
 	}
+
+	if( (shape.i == firstEnemy.i && shape.j == firstEnemy.j) || (shape.i == secondEnemy.i && shape.j == secondEnemy.j)
+	|| (shape.i == thirdEnemy.i && shape.j == thirdEnemy.j) || (shape.i == fourthEnemy.i && shape.j == fourthEnemy.j) ){
+
+		died.play();
+		num_of_lives--;
+		score = score-10;
+		board[shape.i][shape.j] = 0;
+		var randomCell = findRandomEmptyCell(board)
+		shape.i=randomCell[0];
+		shape.j=randomCell[1];
+		
+		board[randomCell[0]][randomCell[1]] = CELL_PACMAN
+
+		//sleep for two seconds
+		setTimeout(() => { console.log("World!"); }, 2000);
+
+	}
+
 	board[shape.i][shape.j] = CELL_PACMAN;
 	var currentTime = new Date();
 	time_elapsed = (currentTime - start_time) / 1000;
