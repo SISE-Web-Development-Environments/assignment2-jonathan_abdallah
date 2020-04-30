@@ -16,10 +16,10 @@ var time_elapsed;
 var interval;
 
 //variables for the index that the enemy is going to
-var prevP_firstEnemy=0;
-var prevP_secondtEnemy=0;
-var prevP_thirdtEnemy=0;
-var prevP_fourthEnemy=0;
+let prevP_firstEnemy=0;
+let prevP_secondtEnemy=0;
+let prevP_thirdtEnemy=0;
+let prevP_fourthEnemy=0;
 
 // sounds
 var eatingPointsSound ;
@@ -28,6 +28,8 @@ var died;
 
 let enemiesMovementOptions = [1,2,3,4] ;
 let checkNumOfEnemies =0; //tells us which enemy are we talking about
+let lastPressedKey;
+//let lengthOfPressedKeys;
 
 var up_key = 38;
 var down_key = 40;
@@ -81,7 +83,9 @@ function Start() {
 	readySound.play();
 	checkNumOfEnemies = 0;
 
+	//lengthOfPressedKeys=0;
 	board = new Array();
+	lastPressedKey = [];
 	num_of_lives = 5;
 	score = 0;
 	pac_color = "#ffff00";
@@ -90,6 +94,9 @@ function Start() {
 	initFoodAmount()
 	var pacman_remain = 1;
 	start_time = new Date();
+	//if(count>=1){
+	//	window.clearInterval(interval);
+	//}
 	for (var i = 0; i < 10; i++) {
 		board[i] = new Array();
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
@@ -227,7 +234,7 @@ function changeDirectionAndDraw(x, y) {
 	var center = new Object();
 	center.x = x * 60 + 30;
 	center.y = y * 60 + 30;
-	var pressedKey = GetKeyPressed();
+	var pressedKey = lastPressedKey[0];
 
 	if (pressedKey == 1) 
 		drawDirection(1.2,1.8,15,2,x,y);
@@ -323,36 +330,348 @@ function Draw() {
 	}
 }
 
+function goThroughThePacman(enemy,prev){ //for enemies that around the pacman
+		
+	//above the shape ************
+	if( (enemy.j<shape.j && enemy.i < shape.i) || (enemy.j<shape.j && enemy.i > shape.i) || (enemy.j<shape.j && enemy.i == shape.i) ){
+		if(enemy.i<shape.i){ //above + left
+			
+			if(board[enemy.i][enemy.j+1] !=CELL_WALL && board[enemy.i][enemy.j+1] !=CELL_GHOST){ //go eat him
+			board[enemy.i][enemy.j] = prev;
+			prev = board[enemy.i][enemy.j+1];
+			enemy.j++;	
+			}
+			else if(board[enemy.i][enemy.j+1] ==CELL_WALL || board[enemy.i][enemy.j+1] ==CELL_GHOST){ //move right
+				board[enemy.i][enemy.j] = prev;
+				prev = board[enemy.i+1][enemy.j];
+				enemy.i++;
+			}
+			//console.log("go")
+			//	console.log(prev)
+			//	console.log(prevP_firstEnemy)
+		}
+	
+		
+		else if(enemy.i>shape.i){ //above + right
+
+			if(board[enemy.i][enemy.j+1] !=CELL_WALL && board[enemy.i][enemy.j+1] !=CELL_GHOST){ //go eat him
+				board[enemy.i][enemy.j] = prev;
+				prev = board[enemy.i][enemy.j+1];
+				enemy.j++;	
+				}
+				else if(board[enemy.i][enemy.j+1] ==CELL_WALL || board[enemy.i][enemy.j+1] ==CELL_GHOST){ //move left
+					board[enemy.i][enemy.j] = prev;
+					prev = board[enemy.i-1][enemy.j];
+					enemy.i--;
+				}
+		}
+		else /*if(enemy.i==shape.i)*/{ //above
+			if(board[enemy.i][enemy.j+1] != CELL_WALL && board[enemy.i][enemy.j+1] !=CELL_GHOST){ //go eat him
+				board[enemy.i][enemy.j] = prev;
+				prev = board[enemy.i][enemy.j+1];
+				enemy.j++;
+			}
+			else if(board[enemy.i][enemy.j+1] == CELL_WALL || board[enemy.i][enemy.j+1] ==CELL_GHOST){//move left
+				board[enemy.i][enemy.j] = prev;
+				prev = board[enemy.i-1][enemy.j];
+				enemy.i--;
+			}
+		}
+		
+	}
+
+	//under the shape *********
+	else if( (enemy.j>shape.j && enemy.i < shape.i) || (enemy.j>shape.j && enemy.i > shape.i) || (enemy.j>shape.j && enemy.i == shape.i) ){
+		if(enemy.i<shape.i){ //under+left
+			
+			if(board[enemy.i][enemy.j-1] !=CELL_WALL && board[enemy.i][enemy.j-1] !=CELL_GHOST){ //go eat him
+			board[enemy.i][enemy.j] = prev;
+			prev = board[enemy.i][enemy.j-1];
+			enemy.j--;	
+			}
+			else if(board[enemy.i][enemy.j-1] ==CELL_WALL || board[enemy.i][enemy.j-1] ==CELL_GHOST){ //move right
+				board[enemy.i][enemy.j] = prev;
+				prev = board[enemy.i+1][enemy.j];
+				enemy.i++;
+			}
+		}
+		else if(enemy.i>shape.i){ //under+right
+			
+			if(board[enemy.i][enemy.j-1] !=CELL_WALL && board[enemy.i][enemy.j-1] !=CELL_GHOST){ //go eat him
+				board[enemy.i][enemy.j] = prev;
+				prev = board[enemy.i][enemy.j-1];
+				enemy.j--;	
+				}
+				else if(board[enemy.i][enemy.j-1] ==CELL_WALL || board[enemy.i][enemy.j-1] ==CELL_GHOST){ //move right
+					board[enemy.i][enemy.j] = prev;
+					prev = board[enemy.i+1][enemy.j];
+					enemy.i++;
+				}
+		}
+		else{ //under
+			if(board[enemy.i][enemy.j-1] != CELL_WALL && board[enemy.i][enemy.j-1] !=CELL_GHOST){ //go eat him
+				board[enemy.i][enemy.j] = prev;
+				prev = board[enemy.i][enemy.j-1];
+				enemy.j--;
+			}
+			else if(board[enemy.i][enemy.j-1] == CELL_WALL || board[enemy.i][enemy.j-1] ==CELL_GHOST){//move left
+				board[enemy.i][enemy.j] = prev;
+				prev = board[enemy.i+1][enemy.j];
+				enemy.i++;
+			}
+		}
+	}
+
+	//left ahead  the shape ****************
+	else if(enemy.i<shape.i && enemy.j == shape.j){
+		if(board[enemy.i+1][enemy.j] != CELL_WALL && board[enemy.i+1][enemy.j] != CELL_GHOST){
+		board[enemy.i][enemy.j] = prev;
+		prev = board[enemy.i+1][enemy.j];
+		enemy.i++;
+		}
+		else if(board[enemy.i+1][enemy.j] == CELL_WALL || board[enemy.i+1][enemy.j] == CELL_GHOST){
+			board[enemy.i][enemy.j]=prev;
+			prev=board[enemy.i][enemy.j-1];
+			enemy.j--;
+		}
+	}
+
+	//right ahead the shape ***********
+	else{
+		if(board[enemy.i-1][enemy.j] != CELL_WALL && board[enemy.i-1][enemy.j] != CELL_GHOST){
+			board[enemy.i][enemy.j] = prev;
+			prev = board[enemy.i-1][enemy.j];
+			enemy.i--;
+		}
+		else if(board[enemy.i-1][enemy.j] == CELL_WALL || board[enemy.i-1][enemy.j] == CELL_GHOST){
+			board[enemy.i][enemy.j]=prev;
+			prev = board[enemy.i][enemy.j+1];
+			enemy.j++;
+		}
+	}
+
+		board[enemy.i][enemy.j] =3;
+		if(enemy==firstEnemy)
+				prevP_firstEnemy=prev;
+		else if(enemy==secondEnemy)
+				prevP_secondtEnemy=prev;
+		else if(enemy==thirdEnemy)
+				prevP_thirdtEnemy=prev;
+		else
+				prevP_fourthEnemy=prev;
+	
+}
+
+function checkIfAround(enemy){
+	if( (Math.abs(shape.i-enemy.i)<=2) && (Math.abs(shape.j-enemy.j)<=2) /*&& (Math.abs(shape.j-enemy.j)!=0)*/ )
+	return true;
+}
+
+function insertToPressedKeys(x){
+	//console.log("insert")
+	//console.log(x);
+	if(x==1 || x==2 || x==3 || x==4){
+		lastPressedKey[0] = x;
+		
+	//lengthOfPressedKeys++;
+	}
+	
+	//console.log(lastPressedKey[0]);
+	//console.log(lengthOfPressedKeys);
+	//console.log("asasa")
+	//console.log(lastPressedKey[0])
+
+}
+function isChanged(a){
+	if(lastPressedKey[0] != x){return true;}
+	return false;
+	
+}
+function isStucked(enemy,move){
+	if((enemy.i == 0 && move ==3) || (enemy.i==9 && move ==4) || (enemy.j==0 && move ==1) || (enemy.j==9 && move ==2))
+		return true;
+	else if( (move == 4) && ((board[enemy.i+1][enemy.j] == CELL_GHOST) || (board[enemy.i+1][enemy.j] == CELL_WALL)) )
+		return true;
+	else if( (move == 3) && ((board[enemy.i-1][enemy.j] == CELL_GHOST) || (board[enemy.i-1][enemy.j] == CELL_WALL)) )
+		return true;
+	else if( (move == 1) && ((board[enemy.i][enemy.j-1] == CELL_GHOST) || (board[enemy.i][enemy.j-1] == CELL_WALL)) )
+		return true;
+	else if( (move == 2) && ((board[enemy.i][enemy.j+1] == CELL_GHOST) || (board[enemy.i][enemy.j+1] == CELL_WALL)) )
+		return true; 
+	else
+		return false;
+}
+function findAnotherPath(enemy){
+
+	
+		if(  (board[enemy.i][enemy.j-1] == CELL_PACMAN) || (board[enemy.i][enemy.j-1] == CELL_FOOD_5) || (board[enemy.i][enemy.j-1] == CELL_FOOD_15) 
+				|| (board[enemy.i][enemy.j-1] == CELL_FOOD_25) || (board[enemy.i][enemy.j-1] == CELL_EMPTY)  )
+				return [enemy.i,enemy.j-1,1];
+
+		else if((board[enemy.i][enemy.j+1] == CELL_PACMAN) || (board[enemy.i][enemy.j+1] == CELL_FOOD_5) || (board[enemy.i][enemy.j+1] == CELL_FOOD_15) 
+				|| (board[enemy.i][enemy.j+1] == CELL_FOOD_25) || (board[enemy.i][enemy.j+1] == CELL_EMPTY))
+				return [enemy.i,enemy.j+1,2];
+
+		else if((board[enemy.i-1][enemy.j] == CELL_PACMAN) || (board[enemy.i-1][enemy.j] == CELL_FOOD_5) || (board[enemy.i-1][enemy.j] == CELL_FOOD_15) 
+				|| (board[enemy.i-1][enemy.j] == CELL_FOOD_25) || (board[enemy.i-1][enemy.j] == CELL_EMPTY))
+				return [enemy.i-1,enemy.j,3];
+
+		else
+			return [enemy.i+1,enemy.j,4];
+		
+}
+
 function UpdatePosition() {
 
+	//console.log("prevP_firstEnemy");
+	//console.log(prevP_firstEnemy);
 	board[shape.i][shape.j] = CELL_EMPTY;
 	var x = GetKeyPressed();
+	insertToPressedKeys(x);
+	var alwaysMoveTo = lastPressedKey[0];
+
+	//if(isChanged(lastPressedKey)){
+
+	//}
+
+	
+	//var pressedKey =x;
+
+	// start of enemies position update
+
+	//var enemy1 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	//var enemy2 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	//var enemy3 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	//var enemy4 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
 
 
-	var enemy1 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
-	var enemy2 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
-	var enemy3 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
-	var enemy4 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	//if(!isStucked(firstEnemy,alwaysMoveTo)){
+		if(checkIfAround(firstEnemy)){
+			goThroughThePacman(firstEnemy,prevP_firstEnemy);
+		}
+		else{
+			if(alwaysMoveTo==1){
+				move(firstEnemy,1,prevP_firstEnemy);
+			}
+			else if(alwaysMoveTo==2){
+				move(firstEnemy,2,prevP_firstEnemy);
+			}
+			else if(alwaysMoveTo==3){
+				move(firstEnemy,3,prevP_firstEnemy);
+			}
+			else if(alwaysMoveTo==4){
+				move(firstEnemy,4,prevP_firstEnemy);
+			}
+
+		}
+//	}
+/*	else{
+
+		var newPosition = findAnotherPath(firstEnemy);
+		board[firstEnemy.i][firstEnemy.j]=prevP_firstEnemy;
+		firstEnemy.i=newPosition[0]-1;
+		firstEnemy.j=newPosition[1]-1;
+		
+		move(firstEnemy,newPosition[2],prevP_firstEnemy);
+	}*/
+	
+	if(checkNumOfEnemies>=2){
+		if(checkIfAround(secondEnemy)){
+			goThroughThePacman(secondEnemy,prevP_secondtEnemy);
+		}
+		else{
+			if(alwaysMoveTo==1){
+				move(secondEnemy,1,prevP_secondtEnemy);
+			}
+			else if(alwaysMoveTo==2){
+				move(secondEnemy,2,prevP_secondtEnemy);
+			}
+			else if(alwaysMoveTo==3){
+				move(secondEnemy,3,prevP_secondtEnemy);
+			}
+			else if(alwaysMoveTo==4){
+				move(secondEnemy,4,prevP_secondtEnemy);
+			}
+	
+		}
+	} 
+	
+	if(checkNumOfEnemies>=3){
+		if(checkIfAround(thirdEnemy)){
+			goThroughThePacman(thirdEnemy,prevP_thirdtEnemy);
+		}
+		else{
+			if(alwaysMoveTo==1){
+				move(thirdEnemy,1,prevP_thirdtEnemy);
+			}
+			else if(alwaysMoveTo==2){
+				move(thirdEnemy,2,prevP_thirdtEnemy);
+			}
+			else if(alwaysMoveTo==3){
+				move(thirdEnemy,3,prevP_thirdtEnemy);
+			}
+			else if(alwaysMoveTo==4){
+				move(thirdEnemy,4,prevP_thirdtEnemy);
+			}
+	
+		}
+	}
+	
+	if(checkNumOfEnemies==4){
+		if(checkIfAround(fourthEnemy)){
+			goThroughThePacman(fourthEnemy,prevP_fourthEnemy);
+		}
+		else{
+			if(alwaysMoveTo==1){
+				move(fourthEnemy,1,prevP_fourthEnemy);
+			}
+			else if(alwaysMoveTo==2){
+				move(fourthEnemy,2,prevP_fourthEnemy);
+			}
+			else if(alwaysMoveTo==3){
+				move(fourthEnemy,3,prevP_fourthEnemy);
+			}
+			else if(alwaysMoveTo==4){
+				move(fourthEnemy,4,prevP_fourthEnemy);
+			}
+	
+		}
+	}
+	
+	/*console.log("absolute value")
+	console.log(firstEnemy.i-shape.i)
+	console.log(Math.abs(firstEnemy.i-shape.i))*/
 
 	//for the first enemy (there is always first enemy no need to check if it is exist)
-	move(firstEnemy,enemy1,prevP_firstEnemy);
+	//move(firstEnemy,enemy1,prevP_firstEnemy);
 
 	// for the second enemy
-	if (checkNumOfEnemies >= 2) {move(secondEnemy,enemy2,prevP_secondtEnemy);}
+	//if (checkNumOfEnemies >= 2) {move(secondEnemy,enemy2,prevP_secondtEnemy);}
 
 	//for the third enemy 
-	if (checkNumOfEnemies >= 3) {move(thirdEnemy,enemy3,prevP_thirdtEnemy);}
+	//if (checkNumOfEnemies >= 3) {move(thirdEnemy,enemy3,prevP_thirdtEnemy);}
 
 	//for the fourth enemy
-	if (checkNumOfEnemies == 4) {move(fourthEnemy,enemy4,prevP_fourthEnemy);}
+	//if (checkNumOfEnemies == 4) {move(fourthEnemy,enemy4,prevP_fourthEnemy);}
 
 	function move(enemy,move,prev){
-
+		
+		//let prev = prev;
 		if(move==1){
-			if(enemy.j>0 && board[enemy.i][enemy.j-1] !=4 && board[enemy.i][enemy.j] != 3){
+			if(enemy.j>0 && board[enemy.i][enemy.j-1] !=4 && board[enemy.i][enemy.j-1] != 3){
 				board[enemy.i][enemy.j] = prev;
 				prev = board[enemy.i][enemy.j -1];
 				enemy.j--;
+			//	console.log("move")
+				//console.log(prev)
+				//console.log(prevP_firstEnemy)
+			}
+			else{
+				if(enemy.j==0){
+				board[enemy.i][enemy.j] = prev;
+				prev = board[enemy.i-1][enemy.j];
+				enemy.i--;
+				}
 			}
 		}
 		if(move==2){
@@ -360,6 +679,13 @@ function UpdatePosition() {
 				board[enemy.i][enemy.j] = prev;
 				prev = board[enemy.i][enemy.j + 1];
 				enemy.j++;
+			}
+			else{
+				if(enemy.j<9){
+				board[enemy.i][enemy.j] = prev;
+				prev = board[enemy.i+1][enemy.j];
+				enemy.i++;
+				}
 			}
 		}
 		if(move==3){
@@ -369,37 +695,65 @@ function UpdatePosition() {
 				prev = board[enemy.i - 1][enemy.j];
 				enemy.i--;
 			}
+			else{
+				if(enemy.i > 0){
+					board[enemy.i][enemy.j] = prev;
+					prev = board[enemy.i][enemy.j-1];
+					enemy.j--;
+				}
+			}
 		}
 		if (move == 4) {
-			if (enemy.i < 9 && board[enemy.i + 1][enemy.j] != 4 && board[enemy.i + 1][enemy.j] != 3) {
+			if (enemy.i < 9 && board[enemy.i + 1][enemy.j] != CELL_WALL && board[enemy.i + 1][enemy.j] != CELL_GHOST) {
 	
 				board[enemy.i][enemy.j] = prev;
 				prev = board[enemy.i + 1][enemy.j];
 				enemy.i++;
 			}
+			else{
+				if(enemy.i < 9){
+					board[enemy.i][enemy.j] = prev;
+					prev = board[enemy.i][enemy.j+1];
+					enemy.j++;
+				}
+			}
 		}
 		board[enemy.i][enemy.j]=3;
 
+		if(enemy==firstEnemy)
+			prevP_firstEnemy=prev;
+		else if(enemy==secondEnemy)
+			prevP_secondtEnemy=prev;
+		else if(enemy==thirdEnemy)
+			prevP_thirdtEnemy=prev;
+		else
+			prevP_fourthEnemy=prev;
 	}
 
+	///////// end of enemies position update
+
+
+
+
+	
 	//pacman position update
 
-	if (x == 1) {
+	if (alwaysMoveTo == 1) {
 		if (shape.j > 0 && board[shape.i][shape.j - 1] != CELL_WALL) {
 			shape.j--;
 		}
 	}
-	if (x == 2) {
+	if (alwaysMoveTo == 2) {
 		if (shape.j < 9 && board[shape.i][shape.j + 1] != CELL_WALL) {
 			shape.j++;
 		}
 	}
-	if (x == 3) {
+	if (alwaysMoveTo == 3) {
 		if (shape.i > 0 && board[shape.i - 1][shape.j] != CELL_WALL) {
 			shape.i--;
 		}
 	}
-	if (x == 4) {
+	if (alwaysMoveTo == 4) {
 		if (shape.i < 9 && board[shape.i + 1][shape.j] != CELL_WALL) {
 			shape.i++;
 		}
@@ -418,10 +772,11 @@ function UpdatePosition() {
 		died.play();
 		num_of_lives--;
 		score = score-10;
-		board[shape.i][shape.j] = 0;
+		board[shape.i][shape.j] = 3;
 		var randomCell = findRandomEmptyCell(board)
 		shape.i=randomCell[0];
 		shape.j=randomCell[1];
+		
 		
 		board[randomCell[0]][randomCell[1]] = CELL_PACMAN
 
@@ -459,6 +814,7 @@ function UpdatePosition() {
 			$("#gameover_modal").modal('show')
 			$("#gameover_text").text("Winner!!!")
 		}
+		//else if(score==num_of_pickups)
 	}
 	if(!gameIsOver) {
 		Draw();
