@@ -518,7 +518,7 @@ function findAnotherPath(enemy){
 
 		else
 			return [enemy.i+1,enemy.j,4];
-		
+		//commit
 }
 
 function UpdatePosition() {
