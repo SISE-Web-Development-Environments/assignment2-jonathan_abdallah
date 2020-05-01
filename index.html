@@ -28,11 +28,11 @@
 			//init
 			$(document).ready(function(){
 				//init buttons
-				$("#login_button").click(function() {displayPage('login'); stopMusic()})
-				$("#register_button").click(function() {displayPage('register'); stopMusic()})
-				$("#nav_welcome_button").click(function() {displayPage('welcome'); stopMusic()})
-				$("#nav_register_button").click(function() {displayPage('register'); stopMusic()})
-				$("#nav_login_button").click(function() {displayPage('login'); stopMusic()})
+				$("#login_button").click(function() {displayPage('login'); stopMusic(); gameIsOver = true})
+				$("#register_button").click(function() {displayPage('register'); stopMusic(); gameIsOver = true})
+				$("#nav_welcome_button").click(function() {displayPage('welcome'); stopMusic(); gameIsOver = true})
+				$("#nav_register_button").click(function() {displayPage('register'); stopMusic(); gameIsOver = true})
+				$("#nav_login_button").click(function() {displayPage('login'); stopMusic(); gameIsOver = true})
 				// $("#nav_settings_button").click(function() {displayPage('settings')})
 				$("#play_button").click(loginUser)
 				$("#register_submit").click(registerUser)

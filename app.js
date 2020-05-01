@@ -47,6 +47,16 @@ var num_of_lives;
 var num_of_pickups;//=$("#settings_pickups").val();
 let enemiesNum = $("#settings_enemies").val();
 
+var keysDown = {};
+addEventListener("keydown", function (e) { keysDown[e.keyCode] = true; }, false);
+addEventListener(
+	"keyup",
+	function (e) {
+		keysDown[e.keyCode] = false;
+	},
+	false
+);
+
 
 //Pseudo Enums
 CELL_EMPTY = 0
@@ -95,6 +105,7 @@ function Start() {
 	checkNumOfEnemies = 0;
 
 	//lengthOfPressedKeys=0;
+	keysDown = {}
 	board = new Array();
 	lastPressedKey = [];
 	num_of_lives = 5;
@@ -107,7 +118,9 @@ function Start() {
 	start_time = new Date();
 	playMusic()
 	//if(count>=1){
-	//	window.clearInterval(interval);
+
+	//window.clearInterval(interval);
+	//window.alert(interval)
 	//}
 	for (var i = 0; i < board_width; i++) {
 		board[i] = new Array();
@@ -179,16 +192,9 @@ function Start() {
 	emptyCell = findRandomEmptyCell(board);
 	board[emptyCell[0]][emptyCell[1]] = CELL_RANDOM
 
-	keysDown = {};
-	addEventListener("keydown", function (e) { keysDown[e.keyCode] = true; }, false);
-	addEventListener(
-		"keyup",
-		function (e) {
-			keysDown[e.keyCode] = false;
-		},
-		false
-	);
+	clearInterval(interval)
 	interval = setInterval(UpdatePosition, 250);
+	window.alert(interval)
 }
 
 function putAnEnemy(i,j){
@@ -291,6 +297,7 @@ function drawDirection(m,n,a,b,x,y){
 
 
 function Draw() {
+	if(gameIsOver){return}
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = Math.round(max_time - time_elapsed)
@@ -552,6 +559,7 @@ function findAnotherPath(enemy){
 
 function UpdatePosition() {
 
+	if(gameIsOver){return}
 	//console.log("prevP_firstEnemy");
 	//console.log(prevP_firstEnemy);
 	board[shape.i][shape.j] = CELL_EMPTY;
