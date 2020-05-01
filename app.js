@@ -27,7 +27,7 @@ var readySound;
 var died;
 
 let enemiesMovementOptions = [1,2,3,4] ;
-let checkNumOfEnemies =0; //tells us which enemy are we talking about
+let checkNumOfEnemies = 0; //tells us which enemy are we talking about
 let lastPressedKey;
 //let lengthOfPressedKeys;
 
@@ -46,6 +46,7 @@ var num_of_enemies;
 var num_of_lives;
 var num_of_pickups;//=$("#settings_pickups").val();
 let enemiesNum = $("#settings_enemies").val();
+
 
 //Pseudo Enums
 CELL_EMPTY = 0
@@ -76,6 +77,11 @@ function sound(src) {
 
 var gameIsOver = false
 function Start() {
+
+	//size of array
+	board_height = $("#canvas").attr("height") / 60
+	board_width = $("#canvas").attr("width") / 60
+
 	gameIsOver = false
 	eatingPointsSound = new sound("sounds\\eating.mp3");
 	readySound = new sound("sounds\\ready.mp3");
@@ -98,10 +104,10 @@ function Start() {
 	//if(count>=1){
 	//	window.clearInterval(interval);
 	//}
-	for (var i = 0; i < 10; i++) {
+	for (var i = 0; i < board_width; i++) {
 		board[i] = new Array();
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-		for (var j = 0; j < 10; j++) {
+		for (var j = 0; j < board_height; j++) {
 			if (isWallLocation(i, j)
 				
 			) {
@@ -206,11 +212,11 @@ function putAnEnemy(i,j){
 }	
 
 function findRandomEmptyCell(board) {
-	var i = Math.floor(Math.random() * 9 + 1);
-	var j = Math.floor(Math.random() * 9 + 1);
+	var i = Math.floor(Math.random() * (board_width-1) + 1);
+	var j = Math.floor(Math.random() * (board_height-1) + 1);
 	while (board[i][j] != CELL_EMPTY) {
-		i = Math.floor(Math.random() * 9 + 1);
-		j = Math.floor(Math.random() * 9 + 1);
+		i = Math.floor(Math.random() * (board_width-1) + 1);
+		j = Math.floor(Math.random() * (board_height-1) + 1);
 	}
 	return [i, j];
 }
@@ -278,8 +284,8 @@ function Draw() {
 	$("#lblLivesValue").text(num_of_lives) 
 
 	//var x = GetKeyPressed();
-	for (var i = 0; i < 10; i++) {
-		for (var j = 0; j < 10; j++) {
+	for (var i = 0; i < board_height; i++) {
+		for (var j = 0; j < board_width; j++) {
 			var center = new Object();
 			center.x = i * 60 + 30;
 			center.y = j * 60 + 30;
@@ -796,31 +802,27 @@ function UpdatePosition() {
 	
 	if(!gameIsOver) {
 		if (num_of_lives == 0) { //lose
-			gameIsOver = true
-			window.clearInterval(interval);
-			//window.alert("Loser!");
-			$("#gameover_modal").modal('show')
-			$("#gameover_text").text("Loser!")
+			endGame("Loser!")
 		} 
 		else if(time_elapsed >= max_time && score < 100) { //half win
-			gameIsOver = true
-			window.clearInterval(interval);
-			//window.alert("You are better than " + score.toString() + " points!");
-			$("#gameover_modal").modal('show')
-			$("#gameover_text").text("You are better than " + score.toString() + " points!")
+			endGame("You are better than " + score.toString() + " points!")
 		}
 		else if(time_elapsed >= max_time && score >= 100) { //win
-			gameIsOver = true
-			window.clearInterval(interval);
-			//window.alert("Winner!!!");
-			$("#gameover_modal").modal('show')
-			$("#gameover_text").text("Winner!!!")
+			endGame("Winner!!!")
 		}
 		//else if(score==num_of_pickups)
 	}
 	if(!gameIsOver) {
 		Draw();
 	}
+}
+
+function endGame(msg){
+	gameIsOver = true
+	window.clearInterval(interval);
+	$("#gameover_modal").modal('show')
+	$("#gameover_text").text(msg)
+	stopMusic()
 }
 
 //calculates amount of each food type
@@ -871,16 +873,22 @@ function shuffle(a) {
 function isWallLocation(i, j) {
 	let matrix = 
 	[
-		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],// , 0, 0, 0, 0, 0],
+		[0, 1, 0, 1, 0, 0, 0, 0, 0, 0 ],// , 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],// , 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 1, 0, 0, 0 ],// , 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 1, 0, 0, 0 ],// , 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],// , 0, 0, 0, 0, 0],
+		[0, 0, 0, 1, 0, 0, 0, 0, 0, 0 ],// , 0, 0, 0, 0, 0],
+		[0, 0, 0, 1, 0, 0, 0, 0, 0, 0 ],// , 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 1, 0, 1, 0 ],// , 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],// , 0, 0, 0, 0, 0],
+
+		// [0, 0, 0, 0, 0, 0, 0, 0, 0, 0  , 0, 0, 0, 0, 0],
+		// [0, 0, 0, 0, 0, 0, 0, 0, 0, 0  , 0, 0, 0, 0, 0],
+		// [0, 0, 0, 0, 0, 0, 0, 0, 0, 0  , 0, 0, 0, 0, 0],
+		// [0, 0, 0, 0, 0, 0, 0, 0, 0, 0  , 0, 0, 0, 0, 0],
+		// [0, 0, 0, 0, 0, 0, 0, 0, 0, 0  , 0, 0, 0, 0, 0],
 	]
 	return matrix[i][j] == 1
 }
