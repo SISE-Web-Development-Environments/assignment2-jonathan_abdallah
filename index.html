@@ -28,11 +28,11 @@
 			//init
 			$(document).ready(function(){
 				//init buttons
-				$("#login_button").click(function() {displayPage('login')})
-				$("#register_button").click(function() {displayPage('register')})
-				$("#nav_welcome_button").click(function() {displayPage('welcome')})
-				$("#nav_register_button").click(function() {displayPage('register')})
-				$("#nav_login_button").click(function() {displayPage('login')})
+				$("#login_button").click(function() {displayPage('login'); stopMusic()})
+				$("#register_button").click(function() {displayPage('register'); stopMusic()})
+				$("#nav_welcome_button").click(function() {displayPage('welcome'); stopMusic()})
+				$("#nav_register_button").click(function() {displayPage('register'); stopMusic()})
+				$("#nav_login_button").click(function() {displayPage('login'); stopMusic()})
 				// $("#nav_settings_button").click(function() {displayPage('settings')})
 				$("#play_button").click(loginUser)
 				$("#register_submit").click(registerUser)
@@ -305,6 +305,28 @@
 				keys[3].listenToKeyPress = false
 			}
 
+			function toggleMusic() {
+				audioplayer = document.getElementById("background_music");
+				if (audioplayer.paused) {
+					playMusic()
+				}   
+				else {
+					stopMusic()
+				}
+				//$(this).toggleClass('pause');
+			}
+
+			function playMusic(){
+				audioplayer = document.getElementById("background_music");
+				audioplayer.play();
+			}
+
+			function stopMusic() {
+				audioplayer = document.getElementById("background_music");
+				audioplayer.pause();
+				audioplayer.currentTime = 0
+			}
+
 		</script>
 
 
@@ -456,6 +478,10 @@
 
 					<!-- GAME PAGE -->
 					<div class= "container" id="game" style="display: none;">
+						<audio id="background_music">
+							<source src="sounds\music.mp3" type="audio/mpeg">
+						  </audio>
+
 						<div class="row">	  
 								<div id="score">
 									<label for="lblScore">SCORE:</label>
@@ -470,8 +496,8 @@
 									<label id="lblUserValue"></label>
 								</div>
 								<div id="lives">
-									<label id="lblLives">NUMBER OF LIVES:</label>
-									<label id="lblLivesValue" for="lblLivesValue">5</label>
+									<label for="lblLives">NUMBER OF LIVES:</label>
+									<label id="lblLivesValue">5</label>
 								</div>
 								<div class="col-lg-9">
 									<canvas id="canvas" height="600" width="600"></canvas>
