@@ -54,10 +54,15 @@ CELL_EMPTY = 0
 CELL_PACMAN = 2 
 CELL_GHOST = 3
 CELL_WALL = 4
+CELL_CLOCK = 6
+CELL_SHIELD = 7
+CELL_RANDOM = 8
 
 CELL_FOOD_5 = 5
 CELL_FOOD_15 = 15
 CELL_FOOD_25 = 25
+
+
 
 
 function sound(src) {
@@ -108,9 +113,7 @@ function Start() {
 		board[i] = new Array();
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
 		for (var j = 0; j < board_height; j++) {
-			if (isWallLocation(i, j)
-				
-			) {
+			if (isWallLocation(i, j)) {
 				board[i][j] = CELL_WALL;
 			} else {
 				var randomNum = Math.random();
@@ -124,7 +127,6 @@ function Start() {
 						pacman_remain--;
 						board[i][j] = CELL_PACMAN;
 					}
-
 				}
 
 				/*else if(num_of_enemies != 0){
@@ -145,6 +147,7 @@ function Start() {
 		}
 	}
 
+	//place enemies
 	while (num_of_enemies != 0) {
 		
 		var i_ind = Math.random();
@@ -161,11 +164,21 @@ function Start() {
 		}
 	}
 
+	//place food
 	while (food_remain > 0) {
-		var emptyCell = findRandomEmptyCell(board);
+		let emptyCell = findRandomEmptyCell(board);
 		board[emptyCell[0]][emptyCell[1]] = getFoodType();
 		food_remain--;
 	}
+
+	//place clock powerup
+	emptyCell = findRandomEmptyCell(board);
+	board[emptyCell[0]][emptyCell[1]] = CELL_CLOCK
+
+	//place shield powerup
+	emptyCell = findRandomEmptyCell(board);
+	board[emptyCell[0]][emptyCell[1]] = CELL_RANDOM
+
 	keysDown = {};
 	addEventListener("keydown", function (e) { keysDown[e.keyCode] = true; }, false);
 	addEventListener(
@@ -280,8 +293,14 @@ function drawDirection(m,n,a,b,x,y){
 function Draw() {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
-	lblTime.value = time_elapsed;
+	lblTime.value = Math.round(max_time - time_elapsed)
 	$("#lblLivesValue").text(num_of_lives) 
+
+	const drawImageById = function(id){
+		context.beginPath();
+		let img = document.getElementById(id);
+		context.drawImage(img, center.x - 30, center.y - 30, 60, 60)
+	}
 
 	//var x = GetKeyPressed();
 	for (var i = 0; i < board_height; i++) {
@@ -322,17 +341,19 @@ function Draw() {
 				context.fill();
 			} 
 			else if (board[i][j] == CELL_GHOST) {				
-				context.beginPath();
-				context.rect(center.x - 30, center.y - 30, 60, 60);
-				context.fillStyle = "blue"; //color
-				context.fill();
-
+				drawImageById("ghost")
 			}
 			else if (board[i][j] == CELL_WALL) {
 				context.beginPath();
 				context.rect(center.x - 30, center.y - 30, 60, 60);
 				context.fillStyle = "grey"; //color
 				context.fill();
+			}
+			else if(board[i][j] == CELL_CLOCK) {
+				drawImageById("clock")
+			}
+			else if(board[i][j] == CELL_RANDOM) {
+				drawImageById("question_mark")
 			}
 		}
 	}
@@ -772,6 +793,18 @@ function UpdatePosition() {
 		
 		//score++;
 		score = score + board[shape.i][shape.j]
+	}
+
+	if(board[shape.i][shape.j] == CELL_CLOCK){
+		max_time = Number(max_time) + 30
+	}
+
+	if(board[shape.i][shape.j] == CELL_RANDOM){
+		let min = -30
+		let max = 50
+		let range = max-min
+		let bonus = Math.round(Math.random(range)) + min
+		score = score + bonus
 	}
 
 	if( (shape.i == firstEnemy.i && shape.j == firstEnemy.j) || (shape.i == secondEnemy.i && shape.j == secondEnemy.j)
