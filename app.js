@@ -340,10 +340,6 @@ function Draw() {
 				context.fill();
 			} 
 			else if (board[i][j] == CELL_GHOST) {				
-				// context.beginPath();
-				// context.rect(center.x - 30, center.y - 30, 60, 60);
-				// context.fillStyle = "blue"; //color
-				// context.fill();
 				drawImageById("ghost")
 			}
 			else if (board[i][j] == CELL_WALL) {
@@ -797,6 +793,11 @@ function UpdatePosition() {
 		//score++;
 		score = score + board[shape.i][shape.j]
 	}
+
+	if(board[shape.i][shape.j] == CELL_CLOCK){
+		max_time = Number(max_time) + 30
+	}
+
 
 	if( (shape.i == firstEnemy.i && shape.j == firstEnemy.j) || (shape.i == secondEnemy.i && shape.j == secondEnemy.j)
 	|| (shape.i == thirdEnemy.i && shape.j == thirdEnemy.j) || (shape.i == fourthEnemy.i && shape.j == fourthEnemy.j) ){
