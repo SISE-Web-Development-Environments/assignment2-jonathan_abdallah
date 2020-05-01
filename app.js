@@ -274,7 +274,8 @@ function Draw() {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
-	lblLivesValue.value = num_of_lives
+	$("#lblLivesValue").text(num_of_lives) 
+
 	//var x = GetKeyPressed();
 	for (var i = 0; i < 10; i++) {
 		for (var j = 0; j < 10; j++) {
