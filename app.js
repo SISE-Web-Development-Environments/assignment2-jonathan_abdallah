@@ -194,7 +194,7 @@ function Start() {
 
 	clearInterval(interval)
 	interval = setInterval(UpdatePosition, 250);
-	window.alert(interval)
+	//window.alert(interval)
 }
 
 function putAnEnemy(i,j){
