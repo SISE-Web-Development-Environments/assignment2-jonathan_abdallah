@@ -80,7 +80,7 @@ function Start() {
 	eatingPointsSound = new sound("sounds\\eating.mp3");
 	readySound = new sound("sounds\\ready.mp3");
 	died = new sound("sounds\\die.mp3");
-	readySound.play();
+	//readySound.play(); disabled for now as we need a looping background music instead
 	checkNumOfEnemies = 0;
 
 	//lengthOfPressedKeys=0;
@@ -94,6 +94,7 @@ function Start() {
 	initFoodAmount()
 	var pacman_remain = 1;
 	start_time = new Date();
+	playMusic()
 	//if(count>=1){
 	//	window.clearInterval(interval);
 	//}
@@ -883,3 +884,4 @@ function isWallLocation(i, j) {
 	]
 	return matrix[i][j] == 1
 }
+
