@@ -56,6 +56,7 @@ CELL_GHOST = 3
 CELL_WALL = 4
 CELL_CLOCK = 6
 CELL_SHIELD = 7
+CELL_RANDOM = 8
 
 CELL_FOOD_5 = 5
 CELL_FOOD_15 = 15
@@ -176,7 +177,7 @@ function Start() {
 
 	//place shield powerup
 	emptyCell = findRandomEmptyCell(board);
-	board[emptyCell[0]][emptyCell[1]] = CELL_SHIELD
+	board[emptyCell[0]][emptyCell[1]] = CELL_RANDOM
 
 	keysDown = {};
 	addEventListener("keydown", function (e) { keysDown[e.keyCode] = true; }, false);
@@ -351,8 +352,8 @@ function Draw() {
 			else if(board[i][j] == CELL_CLOCK) {
 				drawImageById("clock")
 			}
-			else if(board[i][j] == CELL_SHIELD) {
-				drawImageById("shield")
+			else if(board[i][j] == CELL_RANDOM) {
+				drawImageById("question_mark")
 			}
 		}
 	}
@@ -798,6 +799,13 @@ function UpdatePosition() {
 		max_time = Number(max_time) + 30
 	}
 
+	if(board[shape.i][shape.j] == CELL_RANDOM){
+		let min = -30
+		let max = 50
+		let range = max-min
+		let bonus = Math.round(Math.random(range)) + min
+		score = score + bonus
+	}
 
 	if( (shape.i == firstEnemy.i && shape.j == firstEnemy.j) || (shape.i == secondEnemy.i && shape.j == secondEnemy.j)
 	|| (shape.i == thirdEnemy.i && shape.j == thirdEnemy.j) || (shape.i == fourthEnemy.i && shape.j == fourthEnemy.j) ){
