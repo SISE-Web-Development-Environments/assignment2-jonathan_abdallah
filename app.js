@@ -17,8 +17,8 @@ var interval;
 
 //variables for the index that the enemy is going to
 let prevP_firstEnemy=0;
-let prevP_secondtEnemy=0;
-let prevP_thirdtEnemy=0;
+let prevP_secondEnemy=0;
+let prevP_thirdEnemy=0;
 let prevP_fourthEnemy=0;
 
 // sounds
@@ -29,7 +29,10 @@ var died;
 let enemiesMovementOptions = [1,2,3,4] ;
 let checkNumOfEnemies = 0; //tells us which enemy are we talking about
 let lastPressedKey;
-//let lengthOfPressedKeys;
+let enemy1_currentMove;
+let enemy2_currentMove;
+let enemy3_currentMove;
+let enemy4_currentMove;
 
 var up_key = 38;
 var down_key = 40;
@@ -117,6 +120,17 @@ function Start() {
 	var pacman_remain = 1;
 	start_time = new Date();
 	playMusic()
+	
+	/*firstEnemy.movement=enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	secondEnemy.movement = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	thirdEnemy.movement = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	fourthEnemy.movement = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];*/
+
+	enemy1_currentMove= enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	enemy2_currentMove = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	enemy3_currentMove = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	enemy4_currentMove = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+
 	//if(count>=1){
 
 	//window.clearInterval(interval);
@@ -490,9 +504,9 @@ function goThroughThePacman(enemy,prev){ //for enemies that around the pacman
 		if(enemy==firstEnemy)
 				prevP_firstEnemy=prev;
 		else if(enemy==secondEnemy)
-				prevP_secondtEnemy=prev;
+				prevP_secondEnemy=prev;
 		else if(enemy==thirdEnemy)
-				prevP_thirdtEnemy=prev;
+				prevP_thirdEnemy=prev;
 		else
 				prevP_fourthEnemy=prev;
 	
@@ -537,10 +551,35 @@ function isStucked(enemy,move){
 	else
 		return false;
 }
-function findAnotherPath(enemy){
 
-	
-		if(  (board[enemy.i][enemy.j-1] == CELL_PACMAN) || (board[enemy.i][enemy.j-1] == CELL_FOOD_5) || (board[enemy.i][enemy.j-1] == CELL_FOOD_15) 
+function findAnotherPath(enemy,move){ // remove the current move and find another one
+		
+		var arr;
+		var m;
+		//var anotherMove;
+		if(move==1){arr=[2,3,4]}
+		else if(move==2){arr=[1,3,4]}
+		else if(move==3){arr= [1,2,4]}
+		else{arr=[1,2,3]}
+
+		m= arr[Math.floor(Math.random()*arr.length)];
+		if(!isStucked(enemy,m)){
+
+			if(enemy==firstEnemy)
+				enemy1_currentMove=m;
+			else if(enemy==secondEnemy)
+					enemy2_currentMove=m;
+			else if(enemy==thirdEnemy)
+					enemy3_currentMove=m;
+			else
+					enemy4_currentMove=m;
+			
+		}
+		
+			
+			
+		
+		/*if(  (board[enemy.i][enemy.j-1] == CELL_PACMAN) || (board[enemy.i][enemy.j-1] == CELL_FOOD_5) || (board[enemy.i][enemy.j-1] == CELL_FOOD_15) 
 				|| (board[enemy.i][enemy.j-1] == CELL_FOOD_25) || (board[enemy.i][enemy.j-1] == CELL_EMPTY)  )
 				return [enemy.i,enemy.j-1,1];
 
@@ -553,7 +592,7 @@ function findAnotherPath(enemy){
 				return [enemy.i-1,enemy.j,3];
 
 		else
-			return [enemy.i+1,enemy.j,4];
+			return [enemy.i+1,enemy.j,4];*/
 		//commit
 }
 
@@ -576,10 +615,10 @@ function UpdatePosition() {
 
 	// start of enemies position update
 
-	//var enemy1 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
-	//var enemy2 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
-	//var enemy3 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
-	//var enemy4 = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	/*enemy1_currentMove = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	enemy2_currentMove = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	enemy3_currentMove = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	enemy4_currentMove = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];*/
 
 
 	//if(!isStucked(firstEnemy,alwaysMoveTo)){
@@ -587,6 +626,16 @@ function UpdatePosition() {
 			goThroughThePacman(firstEnemy,prevP_firstEnemy);
 		}
 		else{
+			if(!isStucked(firstEnemy,enemy1_currentMove)){
+				move(firstEnemy,enemy1_currentMove,prevP_firstEnemy);
+			}
+			else{
+				findAnotherPath(firstEnemy,enemy1_currentMove);
+				move(firstEnemy,enemy1_currentMove,prevP_firstEnemy);
+
+			}
+		}
+		/*else{
 			if(alwaysMoveTo==1){
 				move(firstEnemy,1,prevP_firstEnemy);
 			}
@@ -600,7 +649,7 @@ function UpdatePosition() {
 				move(firstEnemy,4,prevP_firstEnemy);
 			}
 
-		}
+		}*/
 //	}
 /*	else{
 
@@ -614,66 +663,51 @@ function UpdatePosition() {
 	
 	if(checkNumOfEnemies>=2){
 		if(checkIfAround(secondEnemy)){
-			goThroughThePacman(secondEnemy,prevP_secondtEnemy);
+			goThroughThePacman(secondEnemy,prevP_secondEnemy);
 		}
 		else{
-			if(alwaysMoveTo==1){
-				move(secondEnemy,1,prevP_secondtEnemy);
+			if(!isStucked(secondEnemy,enemy2_currentMove)){
+				move(secondEnemy,enemy2_currentMove,prevP_secondEnemy);
 			}
-			else if(alwaysMoveTo==2){
-				move(secondEnemy,2,prevP_secondtEnemy);
+			else{
+				findAnotherPath(secondEnemy,enemy2_currentMove);
+				move(secondEnemy,enemy2_currentMove,prevP_secondEnemy);
+
 			}
-			else if(alwaysMoveTo==3){
-				move(secondEnemy,3,prevP_secondtEnemy);
-			}
-			else if(alwaysMoveTo==4){
-				move(secondEnemy,4,prevP_secondtEnemy);
-			}
-	
 		}
 	} 
 	
 	if(checkNumOfEnemies>=3){
 		if(checkIfAround(thirdEnemy)){
-			goThroughThePacman(thirdEnemy,prevP_thirdtEnemy);
+			goThroughThePacman(thirdEnemy,prevP_thirdEnemy);
 		}
 		else{
-			if(alwaysMoveTo==1){
-				move(thirdEnemy,1,prevP_thirdtEnemy);
+			if(!isStucked(thirdEnemy,enemy3_currentMove)){
+				move(thirdEnemy,enemy3_currentMove,prevP_thirdEnemy);
 			}
-			else if(alwaysMoveTo==2){
-				move(thirdEnemy,2,prevP_thirdtEnemy);
+			else{
+				findAnotherPath(thirdEnemy,enemy3_currentMove);
+				move(thirdEnemy,enemy3_currentMove,prevP_thirdEnemy);
+
 			}
-			else if(alwaysMoveTo==3){
-				move(thirdEnemy,3,prevP_thirdtEnemy);
-			}
-			else if(alwaysMoveTo==4){
-				move(thirdEnemy,4,prevP_thirdtEnemy);
-			}
-	
 		}
-	}
+	} 
 	
 	if(checkNumOfEnemies==4){
 		if(checkIfAround(fourthEnemy)){
 			goThroughThePacman(fourthEnemy,prevP_fourthEnemy);
 		}
 		else{
-			if(alwaysMoveTo==1){
-				move(fourthEnemy,1,prevP_fourthEnemy);
+			if(!isStucked(fourthEnemy,enemy4_currentMove)){
+				move(fourthEnemy,enemy4_currentMove,prevP_fourthEnemy);
 			}
-			else if(alwaysMoveTo==2){
-				move(fourthEnemy,2,prevP_fourthEnemy);
+			else{
+				findAnotherPath(fourthEnemy,enemy4_currentMove);
+				move(fourthEnemy,enemy4_currentMove,prevP_fourthEnemy);
+
 			}
-			else if(alwaysMoveTo==3){
-				move(fourthEnemy,3,prevP_fourthEnemy);
-			}
-			else if(alwaysMoveTo==4){
-				move(fourthEnemy,4,prevP_fourthEnemy);
-			}
-	
 		}
-	}
+	} 
 	
 	/*console.log("absolute value")
 	console.log(firstEnemy.i-shape.i)
@@ -683,10 +717,10 @@ function UpdatePosition() {
 	//move(firstEnemy,enemy1,prevP_firstEnemy);
 
 	// for the second enemy
-	//if (checkNumOfEnemies >= 2) {move(secondEnemy,enemy2,prevP_secondtEnemy);}
+	//if (checkNumOfEnemies >= 2) {move(secondEnemy,enemy2,prevP_secondEnemy);}
 
 	//for the third enemy 
-	//if (checkNumOfEnemies >= 3) {move(thirdEnemy,enemy3,prevP_thirdtEnemy);}
+	//if (checkNumOfEnemies >= 3) {move(thirdEnemy,enemy3,prevP_thirdEnemy);}
 
 	//for the fourth enemy
 	//if (checkNumOfEnemies == 4) {move(fourthEnemy,enemy4,prevP_fourthEnemy);}
@@ -760,9 +794,9 @@ function UpdatePosition() {
 		if(enemy==firstEnemy)
 			prevP_firstEnemy=prev;
 		else if(enemy==secondEnemy)
-			prevP_secondtEnemy=prev;
+			prevP_secondEnemy=prev;
 		else if(enemy==thirdEnemy)
-			prevP_thirdtEnemy=prev;
+			prevP_thirdEnemy=prev;
 		else
 			prevP_fourthEnemy=prev;
 	}
