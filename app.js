@@ -205,28 +205,28 @@ function putAnEnemy(i,j){
 
 	
 	if(checkNumOfEnemies==1){
-		board[i][j]=3;
+		board[i][j]=CELL_GHOST;
 		firstEnemy.i=i;
 		firstEnemy.j=j;
 		num_of_enemies--;
 		return;
 	}
 	if(checkNumOfEnemies==2){
-		board[i][j]=3;
+		board[i][j]=CELL_GHOST;
 		secondEnemy.i=i;
 		secondEnemy.j=j;
 		num_of_enemies--;
 		return;
 	}
 	if(checkNumOfEnemies==3){
-		board[i][j]=3;
+		board[i][j]=CELL_GHOST;
 		thirdEnemy.i=i;
 		thirdEnemy.j=j;
 		num_of_enemies--;
 		return;
 	}
 	if(checkNumOfEnemies==4){
-		board[i][j]=3;
+		board[i][j]=CELL_GHOST;
 		fourthEnemy.i=i;
 		fourthEnemy.j=j;
 		num_of_enemies--;
@@ -346,7 +346,7 @@ function Draw() {
 						context.fillStyle = pickup_25_color; 
 						break;
 					case CELL_SUGAR:
-						context.fillStyle = "red"
+						drawImageById("sugar")
 					default:
 						context.fillStyle = "black"; //color
 						break;
@@ -494,7 +494,7 @@ function goThroughThePacman(enemy,prev){ //for enemies that around the pacman
 		}
 	}
 
-		board[enemy.i][enemy.j] =3;
+		board[enemy.i][enemy.j] = CELL_GHOST;
 		if(enemy==firstEnemy)
 				prevP_firstEnemy=prev;
 		else if(enemy==secondEnemy)
@@ -739,7 +739,7 @@ function UpdatePosition() {
 		
 		//let prev = prev;
 		if(move==1){
-			if(enemy.j>0 && board[enemy.i][enemy.j-1] !=4 && board[enemy.i][enemy.j-1] != 3){
+			if(enemy.j>0 && board[enemy.i][enemy.j-1] != CELL_WALL && board[enemy.i][enemy.j-1] != CELL_GHOST){
 				board[enemy.i][enemy.j] = prev;
 				prev = board[enemy.i][enemy.j -1];
 				enemy.j--;
@@ -756,7 +756,7 @@ function UpdatePosition() {
 			}*/
 		}
 		if(move==2){
-			if(enemy.j<9 && board[enemy.i][enemy.j+1] != 4 && board[enemy.i][enemy.j+1] != 3){
+			if(enemy.j<9 && board[enemy.i][enemy.j+1] != CELL_WALL && board[enemy.i][enemy.j+1] != CELL_GHOST){
 				board[enemy.i][enemy.j] = prev;
 				prev = board[enemy.i][enemy.j + 1];
 				enemy.j++;
@@ -770,7 +770,7 @@ function UpdatePosition() {
 			}*/
 		}
 		if(move==3){
-			if (enemy.i > 0 && board[enemy.i - 1][enemy.j] != 4 && board[enemy.i - 1][enemy.j] != 3) {
+			if (enemy.i > 0 && board[enemy.i - 1][enemy.j] != CELL_WALL && board[enemy.i - 1][enemy.j] != CELL_GHOST) {
 
 				board[enemy.i][enemy.j] = prev;
 				prev = board[enemy.i - 1][enemy.j];
@@ -799,7 +799,7 @@ function UpdatePosition() {
 				}
 			}*/
 		}
-		board[enemy.i][enemy.j]=3;
+		board[enemy.i][enemy.j]=CELL_GHOST;
 
 		if(enemy==firstEnemy)
 			prevP_firstEnemy=prev;
