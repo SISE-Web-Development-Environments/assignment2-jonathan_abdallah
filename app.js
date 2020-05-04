@@ -622,12 +622,12 @@ function UpdatePosition() {
 
 		if (Number.isInteger(sugar.i)) {
 			if(!isStucked(sugar,sugarmove)){
-				move(sugar,sugarmove,prevsugar)
+				move(sugar,sugarmove,prevsugar,CELL_SUGAR)
 	
 			}
 			else{
 				findAnotherPath(sugar,sugarmove);
-				move(sugar,sugarmove,prevsugar);
+				move(sugar,sugarmove,prevsugar,CELL_SUGAR);
 			}
 		 }
 		
@@ -637,11 +637,11 @@ function UpdatePosition() {
 		}
 		else{
 			if(!isStucked(firstEnemy,enemy1_currentMove)){
-				move(firstEnemy,enemy1_currentMove,prevP_firstEnemy);
+				move(firstEnemy,enemy1_currentMove,prevP_firstEnemy,CELL_GHOST);
 			}
 			else{
 				findAnotherPath(firstEnemy,enemy1_currentMove);
-				move(firstEnemy,enemy1_currentMove,prevP_firstEnemy);
+				move(firstEnemy,enemy1_currentMove,prevP_firstEnemy,CELL_GHOST);
 
 			}
 		}
@@ -677,11 +677,11 @@ function UpdatePosition() {
 		}
 		else{
 			if(!isStucked(secondEnemy,enemy2_currentMove)){
-				move(secondEnemy,enemy2_currentMove,prevP_secondEnemy);
+				move(secondEnemy,enemy2_currentMove,prevP_secondEnemy,CELL_GHOST);
 			}
 			else{
 				findAnotherPath(secondEnemy,enemy2_currentMove);
-				move(secondEnemy,enemy2_currentMove,prevP_secondEnemy);
+				move(secondEnemy,enemy2_currentMove,prevP_secondEnemy,CELL_GHOST);
 
 			}
 		}
@@ -693,11 +693,11 @@ function UpdatePosition() {
 		}
 		else{
 			if(!isStucked(thirdEnemy,enemy3_currentMove)){
-				move(thirdEnemy,enemy3_currentMove,prevP_thirdEnemy);
+				move(thirdEnemy,enemy3_currentMove,prevP_thirdEnemy,CELL_GHOST);
 			}
 			else{
 				findAnotherPath(thirdEnemy,enemy3_currentMove);
-				move(thirdEnemy,enemy3_currentMove,prevP_thirdEnemy);
+				move(thirdEnemy,enemy3_currentMove,prevP_thirdEnemy,CELL_GHOST);
 
 			}
 		}
@@ -709,11 +709,11 @@ function UpdatePosition() {
 		}
 		else{
 			if(!isStucked(fourthEnemy,enemy4_currentMove)){
-				move(fourthEnemy,enemy4_currentMove,prevP_fourthEnemy);
+				move(fourthEnemy,enemy4_currentMove,prevP_fourthEnemy,CELL_GHOST);
 			}
 			else{
 				findAnotherPath(fourthEnemy,enemy4_currentMove);
-				move(fourthEnemy,enemy4_currentMove,prevP_fourthEnemy);
+				move(fourthEnemy,enemy4_currentMove,prevP_fourthEnemy,CELL_GHOST);
 
 			}
 		}
@@ -735,7 +735,7 @@ function UpdatePosition() {
 	//for the fourth enemy
 	//if (checkNumOfEnemies == 4) {move(fourthEnemy,enemy4,prevP_fourthEnemy);}
 
-	function move(enemy,move,prev){
+	function move(enemy,move,prev,cell_value){
 		
 		//let prev = prev;
 		if(move==1){
@@ -799,7 +799,7 @@ function UpdatePosition() {
 				}
 			}*/
 		}
-		board[enemy.i][enemy.j]=CELL_GHOST;
+		board[enemy.i][enemy.j]=cell_value;
 
 		if(enemy==firstEnemy)
 			prevP_firstEnemy=prev;
