@@ -145,7 +145,6 @@
 				}
 				return true
 			}
-			// ****** end of register
 
 
 
@@ -234,10 +233,6 @@
 				for(let i = 0; i< buttons.length; i++){
 					buttons[i].disabled = true
 				}
-				// let colors = clone.find(":button")
-				// for(let i = 0; i< buttons.length; i++){
-				// 	buttons[i].disabled = true
-				// }
 				clone.appendTo("#settings_display");
 			}
 
@@ -260,7 +255,6 @@
 			function recordMovementKey(direction) {
 				let keyToChange = keys[direction]
 				if(keyToChange){
-					//window.alert("please press a button")
 					keys.forEach(k => k.listenToKeyPress = false)
 					keyToChange.listenToKeyPress = true
 					keyToChange.value = -1
@@ -269,8 +263,6 @@
 			}
 				
 			function randomizeSettings() {
-				// ************************************************************************* 
-				//$("#settings_lable").append("<br><br>you got the arrows buttons as default")
 				var min=$("#settings_pickups").attr("min") , max=$("#settings_pickups").attr("max");  
 				let random1 = parseInt(Math.random() * (+max - +min) + +min);
 				$("#settings_pickups").val(random1);
@@ -313,7 +305,6 @@
 				else {
 					stopMusic()
 				}
-				//$(this).toggleClass('pause');
 			}
 
 			function playMusic(){
@@ -380,9 +371,6 @@
 							<input type="text" id="email" name="mail" class="form-control" placeholder="E-Mail" required ><br>
 
 							<label for="date of birth">Date of Birth:</label><br>
-							<!-- <input type="date" id="date" name="trip-start"
-									value="1990-01-01"
-									min="1900-01-01" max="2020-12-12"> -->
 
 							<input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input" required>
 							<br>
@@ -420,17 +408,13 @@
 									<br>Abdalla Asaad
 									<br>
 								</p>
-								<!-- <ul>
-									<li>Jonathan Wolf</li>
-									<li>Abdalla Asaad</li>
-								</ul> -->
 
 								<p>
 									<b>Templates used:</b>
-								<!-- </p>
-								<ul> -->
 									<li><a href="https://www.w3schools.com/bootstrap/bootstrap_modal.asp">https://www.w3schools.com/bootstrap/bootstrap_modal.asp</a></li>
-								<!-- </ul> -->
+									<li><a href="https://www.w3schools.com/bootstrap/bootstrap_modal.asp">https://getbootstrap.com/docs/4.0/examples/sign-in/</a></li>
+									<li><a href="https://www.w3schools.com/bootstrap/bootstrap_modal.asp">https://getbootstrap.com/docs/4.0/examples/cover/#</a></li>
+								
 								</p>
 							</div>
 							<div class="modal-footer">
@@ -462,8 +446,7 @@
 								<input id="settings_enemies" type="number" min=1 max=4 value=1 required="required"><br><br>
 
 								<label>Max Time in seconds (minimum of 60s):</label>
-								<input id="settings_time" type="number" min=10 value=60 required="required"><br><br>
-
+								<input id="settings_time" type="number" min=60 value=60 required="required"><br><br>
 
 								<!-- <button id="settings_apply" type="submit"> Apply </button><br><br>  
 									This doesnt work properly because it refreshes the page
@@ -536,6 +519,7 @@
 						<img id="question_mark" src="images\question_mark.png">
 						<img id="clock" src="images\clock_powerup.png">
 						<img id="ghost" src="images\ghost_orange.png">
+						<img id="ghost" src="images\sugar.jpg">
 						<!-- <img id="shield" src="images\shield.jpg"> -->	
 					</div>
 				</div>
@@ -543,12 +527,9 @@
 
 			</section>
 
-			<!-- <footer>
-				<p>This website was made as part of a course assignment</p>
-			</footer> -->
 			<footer class="footer">
 				<div class="navbar-default ">
-				  <span class="text-muted">This game was made using HTML5. Jonathan Wolf: wolfj@post.bgu.ac.il, Abdalla Asaad: --mail here--</span>
+				  <span class="text-muted">This game was made using HTML5. Jonathan Wolf: wolfj@post.bgu.ac.il, Abdalla Asaad: asaada@post.bgu.ac.il</span>
 				</div>
 			  </footer>
 
