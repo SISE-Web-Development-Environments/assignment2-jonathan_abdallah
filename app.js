@@ -8,6 +8,7 @@ var firstEnemy=new Object() ;
 var secondEnemy=new Object();
 var thirdEnemy=new Object();
 var fourthEnemy=new Object();
+var sugar = new Object();
 var board;
 var score;
 var pac_color;
@@ -20,6 +21,7 @@ let prevP_firstEnemy=0;
 let prevP_secondEnemy=0;
 let prevP_thirdEnemy=0;
 let prevP_fourthEnemy=0;
+let prevsugar=0;
 
 // sounds
 var eatingPointsSound ;
@@ -33,6 +35,7 @@ let enemy1_currentMove;
 let enemy2_currentMove;
 let enemy3_currentMove;
 let enemy4_currentMove;
+var sugarmove;
 
 var up_key = 38;
 var down_key = 40;
@@ -74,6 +77,7 @@ CELL_RANDOM = 8
 CELL_FOOD_5 = 5
 CELL_FOOD_15 = 15
 CELL_FOOD_25 = 25
+CELL_SUGAR = 50
 
 
 
@@ -120,26 +124,23 @@ function Start() {
 	var pacman_remain = 1;
 	start_time = new Date();
 	playMusic()
-	
-	/*firstEnemy.movement=enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
-	secondEnemy.movement = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
-	thirdEnemy.movement = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
-	fourthEnemy.movement = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];*/
 
 	enemy1_currentMove= enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
 	enemy2_currentMove = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
 	enemy3_currentMove = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
 	enemy4_currentMove = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
+	sugarmove = enemiesMovementOptions[Math.floor(Math.random()*enemiesMovementOptions.length)];
 
-	//if(count>=1){
-
-	//window.clearInterval(interval);
-	//window.alert(interval)
-	//}
+	
 	for (var i = 0; i < board_width; i++) {
 		board[i] = new Array();
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
 		for (var j = 0; j < board_height; j++) {
+			if(i==0 && j==6){
+				board[i][j] = CELL_SUGAR;
+				sugar.i=i;
+				sugar.j=j;
+			}
 			if (isWallLocation(i, j)) {
 				board[i][j] = CELL_WALL;
 			} else {
@@ -155,17 +156,6 @@ function Start() {
 						board[i][j] = CELL_PACMAN;
 					}
 				}
-
-				/*else if(num_of_enemies != 0){
-					if( (i==0 && j==0) || (i==0 && j==9) || (i==9 && j==0) || (i==9 && j==9) ){
-						
-						checkNumOfEnemies++;
-						putAnEnemy(i, j);
-
-					}
-				}*/
-					
-
 				else {
 					board[i][j] = CELL_EMPTY;
 				}
@@ -355,12 +345,15 @@ function Draw() {
 					case CELL_FOOD_25:
 						context.fillStyle = pickup_25_color; 
 						break;
+					case CELL_SUGAR:
+						context.fillStyle = "red"
 					default:
 						context.fillStyle = "black"; //color
 						break;
 				}
 				context.fill();
 			} 
+			
 			else if (board[i][j] == CELL_GHOST) {				
 				drawImageById("ghost")
 			}
@@ -373,6 +366,7 @@ function Draw() {
 			else if(board[i][j] == CELL_CLOCK) {
 				drawImageById("clock")
 			}
+			
 			else if(board[i][j] == CELL_RANDOM) {
 				drawImageById("question_mark")
 			}
@@ -571,6 +565,8 @@ function findAnotherPath(enemy,move){ // remove the current move and find anothe
 					enemy2_currentMove=m;
 			else if(enemy==thirdEnemy)
 					enemy3_currentMove=m;
+			else if(enemy==sugar)
+					sugarmove=m;
 			else
 					enemy4_currentMove=m;
 			
@@ -595,6 +591,7 @@ function findAnotherPath(enemy,move){ // remove the current move and find anothe
 			return [enemy.i+1,enemy.j,4];*/
 		//commit
 }
+
 
 function UpdatePosition() {
 
@@ -622,6 +619,19 @@ function UpdatePosition() {
 
 
 	//if(!isStucked(firstEnemy,alwaysMoveTo)){
+
+		if (Number.isInteger(sugar.i)) {
+			if(!isStucked(sugar,sugarmove)){
+				move(sugar,sugarmove,prevsugar)
+	
+			}
+			else{
+				findAnotherPath(sugar,sugarmove);
+				move(sugar,sugarmove,prevsugar);
+			}
+		 }
+		
+		
 		if(checkIfAround(firstEnemy)){
 			goThroughThePacman(firstEnemy,prevP_firstEnemy);
 		}
@@ -737,13 +747,13 @@ function UpdatePosition() {
 				//console.log(prev)
 				//console.log(prevP_firstEnemy)
 			}
-			else{
+			/*else{
 				if(enemy.j==0){
 				board[enemy.i][enemy.j] = prev;
 				prev = board[enemy.i-1][enemy.j];
 				enemy.i--;
 				}
-			}
+			}*/
 		}
 		if(move==2){
 			if(enemy.j<9 && board[enemy.i][enemy.j+1] != 4 && board[enemy.i][enemy.j+1] != 3){
@@ -751,13 +761,13 @@ function UpdatePosition() {
 				prev = board[enemy.i][enemy.j + 1];
 				enemy.j++;
 			}
-			else{
+			/*else{
 				if(enemy.j<9){
 				board[enemy.i][enemy.j] = prev;
 				prev = board[enemy.i+1][enemy.j];
 				enemy.i++;
 				}
-			}
+			}*/
 		}
 		if(move==3){
 			if (enemy.i > 0 && board[enemy.i - 1][enemy.j] != 4 && board[enemy.i - 1][enemy.j] != 3) {
@@ -766,13 +776,13 @@ function UpdatePosition() {
 				prev = board[enemy.i - 1][enemy.j];
 				enemy.i--;
 			}
-			else{
+			/*else{
 				if(enemy.i > 0){
 					board[enemy.i][enemy.j] = prev;
 					prev = board[enemy.i][enemy.j-1];
 					enemy.j--;
 				}
-			}
+			}*/
 		}
 		if (move == 4) {
 			if (enemy.i < 9 && board[enemy.i + 1][enemy.j] != CELL_WALL && board[enemy.i + 1][enemy.j] != CELL_GHOST) {
@@ -781,13 +791,13 @@ function UpdatePosition() {
 				prev = board[enemy.i + 1][enemy.j];
 				enemy.i++;
 			}
-			else{
+			/*else{
 				if(enemy.i < 9){
 					board[enemy.i][enemy.j] = prev;
 					prev = board[enemy.i][enemy.j+1];
 					enemy.j++;
 				}
-			}
+			}*/
 		}
 		board[enemy.i][enemy.j]=3;
 
@@ -797,6 +807,8 @@ function UpdatePosition() {
 			prevP_secondEnemy=prev;
 		else if(enemy==thirdEnemy)
 			prevP_thirdEnemy=prev;
+		else if(enemy==sugar)
+			prevsugar=prev;
 		else
 			prevP_fourthEnemy=prev;
 	}
@@ -855,7 +867,7 @@ function UpdatePosition() {
 		died.play();
 		num_of_lives--;
 		score = score-10;
-		board[shape.i][shape.j] = 3;
+		//board[shape.i][shape.j] = 3;
 		var randomCell = findRandomEmptyCell(board)
 		shape.i=randomCell[0];
 		shape.j=randomCell[1];
@@ -866,6 +878,12 @@ function UpdatePosition() {
 		//sleep for two seconds
 		setTimeout(() => { console.log("World!"); }, 2000);
 
+	}
+	if(shape.i==sugar.i && shape.j==sugar.j){
+		board[shape.i][shape.j]=2;
+		score=score+50;
+		delete sugar.i;
+		delete sugar.j;
 	}
 
 	board[shape.i][shape.j] = CELL_PACMAN;
@@ -932,7 +950,7 @@ function getFoodType() {
 }
 
 function isFoodCell(cell_value) {
-	return (cell_value == CELL_FOOD_5 || cell_value == CELL_FOOD_15 || cell_value == CELL_FOOD_25)
+	return (cell_value == CELL_FOOD_5 || cell_value == CELL_FOOD_15 || cell_value == CELL_FOOD_25 || cell_value ==CELL_SUGAR)
 }
 
 //taken from 
@@ -948,7 +966,7 @@ function shuffle(a) {
 function isWallLocation(i, j) {
 	let matrix = 
 	[
-		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],// , 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 1, 0, 0, 0, 0 ],// , 0, 0, 0, 0, 0],
 		[0, 1, 0, 1, 0, 0, 0, 0, 0, 0 ],// , 0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],// , 0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 0, 0, 1, 0, 0, 0 ],// , 0, 0, 0, 0, 0],
