@@ -42,7 +42,7 @@ var num_of_pickups;
 var num_of_enemies;
 var num_of_lives;
 var num_of_pickups;//=$("#settings_pickups").val();
-let enemiesNum = $("#settings_enemies").val();
+let enemiesNum
 
 var keysDown = {};
 addEventListener("keydown", function (e) { keysDown[e.keyCode] = true; }, false);
@@ -99,7 +99,7 @@ function Start() {
 	//size of array
 	board_height = $("#canvas").attr("height") / 60
 	board_width = $("#canvas").attr("width") / 60
-
+	enemiesNum = num_of_enemies
 	gameIsOver = false
 	eatingPointsSound = new sound("sounds\\eating.mp3");
 	readySound = new sound("sounds\\ready.mp3");
@@ -169,7 +169,7 @@ function Start() {
 	}
 
 	//place enemies
-	while (num_of_enemies != 0) {
+	while (enemiesNum != 0) {
 		
 		var i_ind = Math.random();
 		var j_ind = Math.random();
@@ -212,28 +212,28 @@ function putAnEnemy(i,j){
 		board[i][j]=3;
 		firstEnemy.i=i;
 		firstEnemy.j=j;
-		num_of_enemies--;
+		enemiesNum--;
 		return;
 	}
 	else if(checkNumOfEnemies==2){
 		board[i][j]=3;
 		secondEnemy.i=i;
 		secondEnemy.j=j;
-		num_of_enemies--;
+		enemiesNum--;
 		return;
 	}
 	else if(checkNumOfEnemies==3){
 		board[i][j]=3;
 		thirdEnemy.i=i;
 		thirdEnemy.j=j;
-		num_of_enemies--;
+		enemiesNum--;
 		return;
 	}
 	else{
 		board[i][j]=3;
 		fourthEnemy.i=i;
 		fourthEnemy.j=j;
-		num_of_enemies--;
+		enemiesNum--;
 		return;
 	}
 }	
