@@ -365,7 +365,7 @@ function Draw() {
 						context.fillStyle = pickup_25_color; 
 						break;
 					case CELL_SUGAR:
-						context.fillStyle = "red"
+						drawImageById("sugar")
 					default:
 						context.fillStyle = "black"; //color
 						break;
@@ -410,7 +410,7 @@ function goThroughThePacman(enemy,prev){ //for enemies that around the pacman
 				//enemy.prev = board[enemy.i+1][enemy.j];
 				//enemy.i++;
 				findAnotherPath(enemy)
-				move(enemy)
+				move(enemy, CELL_GHOST)
 				
 			}
 			//console.log("go")
@@ -431,7 +431,7 @@ function goThroughThePacman(enemy,prev){ //for enemies that around the pacman
 					//enemy.prev = board[enemy.i-1][enemy.j];
 					//enemy.i--;
 					findAnotherPath(enemy)
-					move(enemy)
+					move(enemy, CELL_GHOST)
 				}
 		}
 		else /*if(enemy.i==shape.i)*/{ //above
@@ -445,7 +445,7 @@ function goThroughThePacman(enemy,prev){ //for enemies that around the pacman
 				//enemy.prev = board[enemy.i-1][enemy.j];
 				//enemy.i--;
 				findAnotherPath(enemy)
-				move(enemy)
+				move(enemy, CELL_GHOST)
 			}
 		}
 		
@@ -465,7 +465,7 @@ function goThroughThePacman(enemy,prev){ //for enemies that around the pacman
 				//enemy.prev = board[enemy.i+1][enemy.j];
 				//enemy.i++;
 				findAnotherPath(enemy)
-				move(enemy)
+				move(enemy, CELL_GHOST)
 			}
 		}
 		else if(enemy.i>shape.i){ //under+right
@@ -480,7 +480,7 @@ function goThroughThePacman(enemy,prev){ //for enemies that around the pacman
 					//enemy.prev = board[enemy.i+1][enemy.j];
 					//enemy.i++;
 					findAnotherPath(enemy)
-					move(enemy)
+					move(enemy, CELL_GHOST)
 				}
 		}
 		else{ //under
@@ -494,7 +494,7 @@ function goThroughThePacman(enemy,prev){ //for enemies that around the pacman
 				//enemy.prev = board[enemy.i+1][enemy.j];
 				//enemy.i++;
 				findAnotherPath(enemy)
-				move(enemy)
+				move(enemy, CELL_GHOST)
 			}
 		}
 	}
@@ -511,7 +511,7 @@ function goThroughThePacman(enemy,prev){ //for enemies that around the pacman
 			//enemy.prev=board[enemy.i][enemy.j-1];
 			//enemy.j--;
 			findAnotherPath(enemy)
-			move(enemy)
+			move(enemy, CELL_GHOST)
 		}
 	}
 
@@ -527,7 +527,7 @@ function goThroughThePacman(enemy,prev){ //for enemies that around the pacman
 			//enemy.prev = board[enemy.i][enemy.j+1];
 			//enemy.j++;
 			findAnotherPath(enemy)
-			move(enemy)
+			move(enemy, CELL_GHOST)
 		}
 	}
 
@@ -698,7 +698,7 @@ function checkIfGotKilled(pacman_move){
 
 		
 }
-function move(enemy){
+function move(enemy,cell_value){
 		
 	//let prev = prev;
 	if(enemy.move==1){
@@ -762,7 +762,7 @@ function move(enemy){
 			}
 		}*/
 	}
-	board[enemy.i][enemy.j]=3;
+	board[enemy.i][enemy.j]=cell_value;
 
 //	if(enemy==firstEnemy)
 //		prevP_firstEnemy=prev;
@@ -805,12 +805,12 @@ function UpdatePosition() {
 
 		if (Number.isInteger(sugar.i)) {
 			if(!isStucked(sugar)){
-				move(sugar)
+				move(sugar, CELL_SUGAR)
 	
 			}
 			else{
 				findAnotherPath(sugar);
-				move(sugar);
+				move(sugar, CELL_SUGAR);
 			}
 		 }
 		
@@ -820,11 +820,11 @@ function UpdatePosition() {
 		}
 		else{
 			if(!isStucked(firstEnemy)){
-				move(firstEnemy);
+				move(firstEnemy, CELL_GHOST);
 			}
 			else{
 				findAnotherPath(firstEnemy);
-				move(firstEnemy);
+				move(firstEnemy, CELL_GHOST);
 
 			}
 		}
@@ -860,11 +860,11 @@ function UpdatePosition() {
 		}
 		else{
 			if(!isStucked(secondEnemy)){
-				move(secondEnemy);
+				move(secondEnemy, CELL_GHOST);
 			}
 			else{
 				findAnotherPath(secondEnemy);
-				move(secondEnemy);
+				move(secondEnemy, CELL_GHOST);
 
 			}
 		}
@@ -876,11 +876,11 @@ function UpdatePosition() {
 		}
 		else{
 			if(!isStucked(thirdEnemy)){
-				move(thirdEnemy);
+				move(thirdEnemy, CELL_GHOST);
 			}
 			else{
 				findAnotherPath(thirdEnemy);
-				move(thirdEnemy);
+				move(thirdEnemy, CELL_GHOST);
 
 			}
 		}
@@ -892,11 +892,11 @@ function UpdatePosition() {
 		}
 		else{
 			if(!isStucked(fourthEnemy)){
-				move(fourthEnemy);
+				move(fourthEnemy, CELL_GHOST);
 			}
 			else{
 				findAnotherPath(fourthEnemy);
-				move(fourthEnemy);
+				move(fourthEnemy, CELL_GHOST);
 
 			}
 		}
