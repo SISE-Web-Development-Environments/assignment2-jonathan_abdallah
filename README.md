@@ -2,8 +2,8 @@ Website URL:
 * https://sise-web-development-environments.github.io/assignment2-jonathan_abdallah/
 
 Students:
-1. Jonathan Wolf 308087626 יהונתן וולף
-2. Abdalla Asaad
+1. Jonathan Wolf 308087626
+2. Abdalla Asaad 206140337
 
 Features:
 1. A clock pickup that increase the play time by 30s
