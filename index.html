@@ -228,6 +228,7 @@
 			function copySettings() {
 				$("#settings_display").empty()
 				let clone = $("#settings_form").clone()
+				let children = clone.children()
 				clone.children().attr('disabled', 'disabled');
 				let buttons = clone.find(":button")
 				for(let i = 0; i< buttons.length; i++){
@@ -438,9 +439,12 @@
 								<input id="settings_pickups" type="number" min=50 max=90 value=50><br><br>	
 
 								<label>Colors:</label>
-								<li>5 point pickup: <input id="settings_5_point_color" type="color" required="required"><br></li>
-								<li>15 point pickup: <input id="settings_15_point_color" type="color" required="required"><br></li>
-								<li>25 point pickup: <input id="settings_25_point_color" type="color" required="required"><br></li><br>
+								<li>5 point pickup: </li>
+								<input id="settings_5_point_color" type="color" required="required"><br>
+								<li>15 point pickup: </li>
+								<input id="settings_15_point_color" type="color" required="required"><br>
+								<li>25 point pickup: </li>
+								<input id="settings_25_point_color" type="color" required="required"><br><br>
 								
 								<label>Number of enemies:</label>
 								<input id="settings_enemies" type="number" min=1 max=4 value=1 required="required"><br><br>
